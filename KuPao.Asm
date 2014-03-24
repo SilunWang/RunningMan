@@ -100,7 +100,7 @@ LOCAL Dc :HDC
 		invoke BeginPaint,hWnd,Addr ps
 	   	mov Dc,eax ;// 返回画笔对象
 	   	
-	   	invoke WMPaint,Dc
+	   	invoke WMPaint,Dc,hWnd
 	   	
 	   	invoke EndPaint,hWnd,Addr ps
 	.ELSEIF uMsg == WM_TIMER
@@ -115,11 +115,23 @@ LOCAL Dc :HDC
 	ret
 WndProc endp
 
-WMPaint Proc Dc:DWORD	
-	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackDc,0,0,SRCCOPY ;//绘制背景图片
-	;invoke dw2a,actor_y,OFFSET testStr
-	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
-	invoke DrawIconEx,Dc,actor_x,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//绘制背景图片
+WMPaint Proc Dc:DWORD, hWnd:DWORD	
+LOCAL tmpDc: DWORD
+LOCAL tmpBitmap: DWORD
+	invoke CreateCompatibleDC, Dc
+	mov tmpDc, eax
+	invoke CreateCompatibleBitmap,Dc, WINDOW_WIDTH, WINDOW_HEIGHT
+	mov tmpBitmap, eax
+	invoke SelectObject,tmpDc, tmpBitmap
+	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,0,0,SRCCOPY ;//绘制背景图片
+	invoke DrawIconEx,tmpDc,100,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//绘制小人
+	invoke DrawIconEx,tmpDc,200,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
+	invoke DrawIconEx,tmpDc,300,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
+	invoke DrawIconEx,tmpDc,400,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
+	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,tmpDc,0,0,SRCCOPY ;
+	invoke ReleaseDC,hWnd,tmpDc
+	invoke DeleteObject,tmpBitmap
+	invoke DeleteObject,tmpDc
 	ret
 WMPaint endp
 
@@ -129,7 +141,7 @@ LOCAL Dc:DWORD
 	invoke GetDC,hWnd
 	mov Dc,eax
 	invoke CreateCompatibleDC,Dc
-	mov BackDc,eax
+	mov BackgroundDc,eax
 	;//invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0 
 	invoke LoadBitmap,hInstance,BM_BACKGROUND
 	
@@ -139,7 +151,7 @@ LOCAL Dc:DWORD
 	.endif
 	
 	mov hBackg,eax
-	invoke SelectObject,BackDc,hBackg ;//将一个Dc和bitmap hd与资源绑定起来
+	invoke SelectObject,BackgroundDc,hBackg ;//将一个Dc和bitmap hd与资源绑定起来
 	
 	invoke CreateCompatibleDC,Dc
 	mov ActorDc,eax

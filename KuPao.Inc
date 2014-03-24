@@ -28,12 +28,12 @@ FREQUENCY equ 40
 
 
 .data
-	BackDc  dd ?
+	BackgroundDc  dd ?
 	ActorDc dd ?
 	hBackg dd ?
 	hActor dd ?
 
-WMPaint proto:DWORD
+WMPaint proto,p1:DWORD,p2:DWORD
 LoadRes proto:HWND
 KeyDownCallBack proto:DWORD
 ActorMove proto:DWORD
