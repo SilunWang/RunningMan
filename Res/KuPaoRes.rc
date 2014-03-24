@@ -1,4 +1,6 @@
 #define background			1000
 #define actor				1001
+#define background1			1002
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/xiaoren.ico"
+background1		BITMAP    DISCARDABLE "Res/1.bmp"

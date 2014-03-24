@@ -44,10 +44,12 @@ MapPoint ends
 	base_x SDWORD 200
 	base_y SDWORD 300
 	
-	actorSpeed_x SDWORD 0
+	actorSpeed_x SDWORD 5
 	actorSpeed_y SDWORD 0
 	
 	
 	actorState SDWORD 0
+	
+	leftFringe SDWORD 5
 	
 	

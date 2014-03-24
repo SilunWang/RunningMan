@@ -115,19 +115,35 @@ LOCAL Dc :HDC
 	ret
 WndProc endp
 
-WMPaint Proc Dc:DWORD, hWnd:DWORD	
+WMPaint Proc USES eax ebx edx,
+	Dc:DWORD, hWnd:DWORD	
 LOCAL tmpDc: DWORD
 LOCAL tmpBitmap: DWORD
+LOCAL tmpActorX: SDWORD
+LOCAL tmpBackground: SDWORD
+
+	mov eax, actor_x
+	sub eax, leftFringe
+	mov tmpActorX, eax
+	
+	
+	mov eax, leftFringe
+	cdq
+	mov ebx, 1536
+	idiv ebx
+	mov tmpBackground, edx
+
 	invoke CreateCompatibleDC, Dc
 	mov tmpDc, eax
 	invoke CreateCompatibleBitmap,Dc, WINDOW_WIDTH, WINDOW_HEIGHT
 	mov tmpBitmap, eax
 	invoke SelectObject,tmpDc, tmpBitmap
-	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,0,0,SRCCOPY ;//ªÊ÷∆±≥æ∞Õº∆¨
-	invoke DrawIconEx,tmpDc,100,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//ªÊ÷∆–°»À
-	invoke DrawIconEx,tmpDc,200,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
-	invoke DrawIconEx,tmpDc,300,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
-	invoke DrawIconEx,tmpDc,400,actor_y,hActor,80D,80D,0,0,DI_NORMAL;
+	
+	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,tmpBackground,0,SRCCOPY ;//ªÊ÷∆±≥æ∞Õº∆¨1
+	mov eax, tmpBackground
+	sub eax, 1536
+	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,eax,0,SRCCOPY ;//ªÊ÷∆±≥æ∞Õº∆¨2
+	invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//ªÊ÷∆–°»À
 	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,tmpDc,0,0,SRCCOPY ;
 	invoke ReleaseDC,hWnd,tmpDc
 	invoke DeleteObject,tmpBitmap
@@ -143,7 +159,7 @@ LOCAL Dc:DWORD
 	invoke CreateCompatibleDC,Dc
 	mov BackgroundDc,eax
 	;//invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0 
-	invoke LoadBitmap,hInstance,BM_BACKGROUND
+	invoke LoadBitmap,hInstance,BM_BACKGROUND1
 	
 	.if eax == 0
 	   mov eax ,FALSE 
@@ -205,13 +221,15 @@ LOCAL R:RECT
 Repaint endp
 
 UpdateData proc USES eax ebx
+	mov eax, actorSpeed_x
+	add actor_x, eax
+	add leftFringe, eax
+
 	.if actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
 		mov eax, actor_y
 		sub eax, actorSpeed_y
 		mov actor_y, eax
-		sub actorSpeed_y, ACCELERATE_SPEED
-		
-
+		sub actorSpeed_y, ACCELERATE_SPEED		
 				
 		cmp eax, base_y
 		jb L1

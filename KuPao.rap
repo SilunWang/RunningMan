@@ -53,6 +53,7 @@ AutoLoad=1,2
 [Resource]
 1=background,1000,0,Res\background.bmp
 2=actor,1001,2,Res\xiaoren.ico
+3=background1,1002,0,Res\1.bmp
 [Collapse]
 3=
 2=
@@ -119,6 +120,7 @@ GroupExpand=0,1,1,0
 [BreakPoint]
 0=
 [Find]
-1="Backdc"
-2="MessageBox"
-3="actorState"
+1="uses"
+2="Backdc"
+3="MessageBox"
+4="actorState"
