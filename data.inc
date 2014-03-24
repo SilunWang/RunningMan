@@ -1,13 +1,53 @@
+ACTOR_RUN  equ 0
+ACTOR_JUMP1 equ 1
+ACTOR_JUMP2 equ 2
+ACTOR_CROUCH equ 3
+
+NONE_OBSTACLE equ 0
+UP_OBSTACLE equ 1
+DOWN_OBSTACLE equ 2
+
+UP_OBSTACLE_HEIGHT equ 30
+DOWN_OBSTACLE_GAP equ 50
+
+GOLDEN_COIN equ 30
+SILVER_COIN equ 20
+RAINBOW_COIN equ 10
+NONE_COIN equ 0
+
+DUCK_BISCUIT equ 25
+BEAR_BISCUIT equ 15
+NONE_BISCUIT equ 0
+
+ACTOR_RUN_HEIGHT equ 80
+ACTOR_CROUCH_HEIGHT equ 40
+
+INITIAL_SPEED equ 24
+ACCELERATE_SPEED equ 3
+
+
+MapPoint STRUCT
+	ground_y SDWORD 50
+	obstacleType SDWORD NONE_OBSTACLE
+	coinType SDWORD NONE_COIN
+	biscuitType SDWORD NONE_BISCUIT
+	coinStart SWORD 0
+	coinEnd SWORD 0
+	biscuitPosition SWORD 0
+MapPoint ends 
+
 .data
 	
-	actor_x DWORD 200
-	actor_y DWORD 150
+	actor_x SDWORD 200
+	actor_y SDWORD 300
 	
-	base_x DWORD 200
-	base_y DWORD 150
+	base_x SDWORD 200
+	base_y SDWORD 300
 	
 	actorSpeed_x SDWORD 0
 	actorSpeed_y SDWORD 0
 	
 	
-	actorState DWORD 0
+	actorState SDWORD 0
+	
+	

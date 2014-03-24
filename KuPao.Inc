@@ -16,12 +16,16 @@ includelib comctl32.lib
 includelib comdlg32.lib
 includelib masm32.lib
 
+WINDOW_WIDTH equ 1024
+WINDOW_HEIGHT equ 576
+WINDOW_X equ 170
+WINDOW_Y equ 100
+
 BM_BACKGROUND equ 1000
 BM_ACTOR equ 1001
 
-ACTOR_RUN  equ 2000
-ACTOR_JUMP equ 2001
-ACTOR_CROUCH equ 2002
+FREQUENCY equ 40
+
 
 .data
 	BackDc  dd ?

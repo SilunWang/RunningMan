@@ -59,8 +59,8 @@ AutoLoad=1,2
 1=
 [Size]
 3=0,0,0,0,0
-2=0,0,0,0,415
-1=0,0,0,0,3550
+2=0,0,1054,410,473
+1=0,0,1054,410,1306
 [VersionControl]
 Settings=1246
 重要事件=129
@@ -71,7 +71,7 @@ MilestoneOnTime=2
 MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
-MilestoneOnDateDate=21
+MilestoneOnDateDate=24
 MilestoneOnDateTimeYear=2014
 MilestoneOnDateTimeMonth=3
 MilestoneOnDateTimeDate=21

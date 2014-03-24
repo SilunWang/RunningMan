@@ -63,8 +63,8 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
 	
 	invoke RegisterClassEx, addr wc
 	INVOKE CreateWindowEx,NULL,ADDR ClassName,ADDR AppName,\
-           WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,\
-           CW_USEDEFAULT,CW_USEDEFAULT,CW_USEDEFAULT,NULL,NULL,\
+           WS_OVERLAPPEDWINDOW,WINDOW_X,\
+           WINDOW_Y,WINDOW_WIDTH,WINDOW_HEIGHT,NULL,NULL,\
            hInst,NULL
 	mov   hwnd,eax
 	
@@ -116,7 +116,7 @@ LOCAL Dc :HDC
 WndProc endp
 
 WMPaint Proc Dc:DWORD	
-	invoke BitBlt,Dc,0,0,569D,320D,BackDc,0,0,SRCCOPY ;//ªÊ÷∆±≥æ∞Õº∆¨
+	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackDc,0,0,SRCCOPY ;//ªÊ÷∆±≥æ∞Õº∆¨
 	;invoke dw2a,actor_y,OFFSET testStr
 	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
 	invoke DrawIconEx,Dc,actor_x,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//ªÊ÷∆±≥æ∞Õº∆¨
@@ -169,11 +169,13 @@ KeyDownCallBack endp
 
 ActorMove proc vKey :DWORD
 	mov eax, vKey
-	.if eax == VK_UP
+	.if eax == VK_UP && actorState != ACTOR_JUMP2
 		;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
-		mov actorSpeed_y, 8
-		.if actorState != ACTOR_JUMP
-			mov actorState,ACTOR_JUMP
+		mov actorSpeed_y, INITIAL_SPEED
+		.if actorState == ACTOR_JUMP1
+			mov actorState,ACTOR_JUMP2
+		.else
+			mov actorState,ACTOR_JUMP1
 		.endif
 	.endif
 	
@@ -191,27 +193,19 @@ LOCAL R:RECT
 Repaint endp
 
 UpdateData proc USES eax ebx
-		invoke dw2a,actor_y,OFFSET testStr
-		invoke dw2a,actorSpeed_y,OFFSET testStr2
-		;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
-	.if actorState == ACTOR_JUMP
+	.if actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
 		mov eax, actor_y
 		sub eax, actorSpeed_y
 		mov actor_y, eax
-		sub actorSpeed_y, 1
+		sub actorSpeed_y, ACCELERATE_SPEED
 		
 
-		
-		
-		cmp eax, 150
+				
+		cmp eax, base_y
 		jb L1
 		mov ebx, base_y
 		mov actor_y, ebx
-		;invoke dw2a,actorState,OFFSET testStr
-		;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
-		mov actorState, 2000
-		;invoke dw2a,actorState,OFFSET testStr
-		;invoke MessageBox,0,OFFSET testStr, OFFSET testStr,0
+		mov actorState, ACTOR_RUN
 		L1:
 	.else	
 	.endif
