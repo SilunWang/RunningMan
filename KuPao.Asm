@@ -147,10 +147,7 @@ LOCAL coinEndY: SDWORD
 	mov ebx, BACKG_WIDTH
 	idiv ebx
 	mov tmpBackground, edx
-	;invoke dw2a, edx, OFFSET testStr
 	;invoke dw2a, leftFringe, OFFSET testStr
-	;invoke dw2a,coinEndY, OFFSET testStr2
-	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
 	;invoke dw2a,coinEndY, OFFSET testStr2
 	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
 	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,tmpBackground,0,SRCCOPY ;//绘制背景图片1
@@ -200,7 +197,7 @@ LOCAL coinEndY: SDWORD
 	ret
 WMPaint endp
 
-DrawMapPoint proc USES eax ebx ecx edx esi,
+DrawMapPoint proc USES eax ebx ecx edx esi edi,
 	tmpDc: DWORD,
 	pointIndex: DWORD
 	
@@ -222,21 +219,20 @@ LOCAL pointOffset:DWORD
 	
 	;绘制金币/银币等
 	
-	mov eax, 0
-	mov edi, esi
-	add edi, 8
-	.while eax < 18
-		mov ebx, eax
-		imul ebx, 32
+	mov ebx, 0
+	lea edi, (MapPoint PTR [esi]).elements
+	.while ebx < ELEMENTS_LENGTH
+		mov eax, ebx
+		imul eax, MAPPOINT_LENGTH
 		mov edx, [edi]
+		
 		.if edx == GOLDEN_COIN
-			invoke DrawIconEx,tmpDc,pointX,ebx,hGoldenCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
-			
+			invoke DrawIconEx,tmpDc,pointX,eax,hGoldenCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
 		.endif
-		add esi, 4
-		add eax, 1
+		
+		add edi, SIZEOF DWORD
+		inc ebx
 	.endw
-	
 	
 	mov ebx, (MapPoint PTR [esi]).ground_y
 	.while ebx <= WINDOW_HEIGHT
@@ -328,11 +324,12 @@ LOCAL R:RECT
 
 Repaint endp
 
-UpdateData proc USES eax ebx edx esi
+UpdateData proc USES eax ebx edx esi edi
 	mov eax, actorSpeed_x
 	add actor_x, eax
 	add leftFringe, eax
 	
+	;取出数组偏移地址
 	mov ebx, MAPPOINT_LENGTH
 	mov eax, actor_x
 	cdq
@@ -340,10 +337,13 @@ UpdateData proc USES eax ebx edx esi
 	imul eax, SIZEOF MapPoint
 	mov esi, OFFSET gMap
 	add esi, eax
+	
+	;取出地面高度，base_y：头的高度
 	mov eax, (MapPoint PTR [esi]).ground_y
 	mov base_y, eax
 	sub base_y, ACTOR_RUN_HEIGHT
-
+	
+	;更新人的状态
 	.if actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
 		mov eax, actor_y
 		sub eax, actorSpeed_y
@@ -358,6 +358,20 @@ UpdateData proc USES eax ebx edx esi
 		L1:
 	.endif
 	
+	;更新金币状态
+	mov ebx, MAPPOINT_LENGTH
+	mov eax, actor_y
+	cdq
+	idiv ebx
+	lea edi, (MapPoint PTR [esi]).elements
+	imul eax, 4
+	add edi, eax
+	mov ebx, NONE_ELEMENT
+	mov [edi], ebx
+	add edi, 4
+	mov [edi], ebx
+	add edi, 4
+	mov [edi], ebx
 	
 	ret
 
