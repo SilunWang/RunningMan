@@ -23,23 +23,35 @@ WINDOW_Y equ 100
 STEADY_X equ 200
 
 BM_BACKGROUND equ 1000
-BM_ACTOR equ 1001
+ICON_ACTOR equ 1001
 BM_BACKGROUND1 equ 1002
+ICON_GOLDEN_COIN equ 1003
 
 FREQUENCY equ 30
 
 
+
 .data
 	BackgroundDc  dd ?
-	ActorDc dd ?
+
 	hBackg dd ?
 	hActor dd ?
+	hGoldenCoin dd ?
+	
+	testStr db "heheaa",0
+   	testStr2 db "hheaaa",0
 
 WMPaint proto,p1:DWORD,p2:DWORD
+DrawMapPoint proto,p1:DWORD,p2:DWORD
+
 LoadRes proto:HWND
+InitMap proto
+
 KeyDownCallBack proto:DWORD
 ActorMove proto:DWORD
 Repaint proto:HWND
 UpdateData proto
+
+
 
 

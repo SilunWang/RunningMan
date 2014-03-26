@@ -1,6 +1,8 @@
 #define background			1000
 #define actor				1001
 #define background1			1002
+#define goldenCoin			1003
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/xiaoren.ico"
 background1		BITMAP    DISCARDABLE "Res/1.bmp"
+goldenCoin		ICON      DISCARDABLE "Res/golden_coin_32X32.ico"

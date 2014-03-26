@@ -25,15 +25,19 @@ ACTOR_CROUCH_HEIGHT equ 40
 INITIAL_SPEED equ 24
 ACCELERATE_SPEED equ 3
 
+GROUND_BASE equ 416
+
+MAPPOINT_LENGTH equ 32 
+
 
 MapPoint STRUCT
-	ground_y SDWORD 50
+	ground_y SDWORD GROUND_BASE
 	obstacleType SDWORD NONE_OBSTACLE
 	coinType SDWORD NONE_COIN
 	biscuitType SDWORD NONE_BISCUIT
-	coinStart SWORD 0
-	coinEnd SWORD 0
-	biscuitPosition SWORD 0
+	coinStart SDWORD 0
+	coinEnd SDWORD 0
+	biscuitPosition SDWORD 0
 MapPoint ends 
 
 .data
@@ -52,4 +56,7 @@ MapPoint ends
 	
 	leftFringe SDWORD 5
 	
+	
+	
+	gMap MapPoint 128 DUP(<>)
 	
