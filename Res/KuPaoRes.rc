@@ -2,7 +2,15 @@
 #define actor				1001
 #define background1			1002
 #define goldenCoin			1003
+#define silverCoin			1004
+#define rainbowCoin			1005
+#define floor				1006
+#define whitebg				1007
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/xiaoren.ico"
-background1		BITMAP    DISCARDABLE "Res/1.bmp"
+background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
 goldenCoin		ICON      DISCARDABLE "Res/golden_coin_32X32.ico"
+silverCoin		ICON      DISCARDABLE "Res/silver_coin.ico"
+rainbowCoin		ICON      DISCARDABLE "Res/rainbow_coin.ico"
+floor			BITMAP    DISCARDABLE "Res/floor.bmp"
+whitebg			BITMAP    DISCARDABLE "Res/whitebg.bmp"

@@ -13,31 +13,33 @@ DOWN_OBSTACLE_GAP equ 50
 GOLDEN_COIN equ 30
 SILVER_COIN equ 20
 RAINBOW_COIN equ 10
-NONE_COIN equ 0
-
 DUCK_BISCUIT equ 25
 BEAR_BISCUIT equ 15
-NONE_BISCUIT equ 0
+NONE_ELEMENT equ 0
 
+ACTOR_WIDTH equ 80
 ACTOR_RUN_HEIGHT equ 80
 ACTOR_CROUCH_HEIGHT equ 40
 
-INITIAL_SPEED equ 24
-ACCELERATE_SPEED equ 3
-
+;跳跃初始速度
+INITIAL_SPEED equ 16
+;重力加速度
+ACCELERATE_SPEED equ 1
+;地面基准高度
 GROUND_BASE equ 416
 
-MAPPOINT_LENGTH equ 32 
-
+MAPPOINT_LENGTH equ 32
 
 MapPoint STRUCT
+
 	ground_y SDWORD GROUND_BASE
 	obstacleType SDWORD NONE_OBSTACLE
-	coinType SDWORD NONE_COIN
-	biscuitType SDWORD NONE_BISCUIT
-	coinStart SDWORD 0
-	coinEnd SDWORD 0
-	biscuitPosition SDWORD 0
+	;coinType SDWORD NONE_COIN
+	;biscuitType SDWORD NONE_BISCUIT	
+	elements SDWORD 18 DUP(GOLDEN_COIN)
+	;coinStart SDWORD 0
+	;coinEnd SDWORD 0
+	;biscuitPosition SDWORD 0
 MapPoint ends 
 
 .data
@@ -48,15 +50,13 @@ MapPoint ends
 	base_x SDWORD 200
 	base_y SDWORD 300
 	
-	actorSpeed_x SDWORD 5
+	actorSpeed_x SDWORD 6
 	actorSpeed_y SDWORD 0
 	
 	
 	actorState SDWORD 0
 	
-	leftFringe SDWORD 5
+	leftFringe SDWORD 32
 	
-	
-	
-	gMap MapPoint 128 DUP(<>)
+	gMap MapPoint 256 DUP(<>)
 	

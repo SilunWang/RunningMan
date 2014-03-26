@@ -68,7 +68,7 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
 	
 	invoke ShowWindow, hwnd,SW_SHOWNORMAL
 	invoke UpdateWindow, hwnd
-	invoke SetTimer,hwnd,1,FREQUENCY,NULL
+	invoke SetTimer,hwnd, TIMERID,FREQUENCY,NULL
 
 	
 	.WHILE TRUE
@@ -93,18 +93,24 @@ LOCAL Dc :HDC
 	.ELSEIF uMsg==WM_CREATE
 		invoke LoadRes,hWnd;//
 		invoke InitMap
+		invoke UpdateData
+		mov eax, base_y
+		mov actor_y, eax
 	.ELSEIF uMsg==WM_KEYDOWN
 		invoke KeyDownCallBack, wParam
 	.ELSEIF uMsg==WM_PAINT
 		invoke BeginPaint,hWnd,Addr ps
-	   	mov Dc,eax ;// 返回画笔对象
-	   	
+	   	mov Dc,eax ;// 返回画笔对象	   	
 	   	invoke WMPaint,Dc,hWnd
 	   	
 	   	invoke EndPaint,hWnd,Addr ps
 	.ELSEIF uMsg == WM_TIMER
 		invoke UpdateData
 		invoke Repaint,hWnd
+		.if leftFringe > 3000
+			invoke KillTimer,hWnd, TIMERID
+			invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
+		.endif
 	.ELSE
 		invoke DefWindowProc,hWnd,uMsg,wParam,lParam		
 		ret
@@ -127,8 +133,6 @@ LOCAL rightPoint: SDWORD
 LOCAL coinStartY: SDWORD
 LOCAL coinEndY: SDWORD
 
-		
-
  	;创建双缓冲
 	invoke CreateCompatibleDC, Dc
 	mov tmpDc, eax
@@ -137,24 +141,33 @@ LOCAL coinEndY: SDWORD
 	invoke SelectObject,tmpDc, tmpBitmap
 	
 	;绘制背景图片
+	mov edx, 0
 	mov eax, leftFringe
 	cdq
-	mov ebx, 1536
+	mov ebx, BACKG_WIDTH
 	idiv ebx
 	mov tmpBackground, edx
+	;invoke dw2a, edx, OFFSET testStr
+	;invoke dw2a, leftFringe, OFFSET testStr
+	;invoke dw2a,coinEndY, OFFSET testStr2
+	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
+	;invoke dw2a,coinEndY, OFFSET testStr2
+	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
 	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,tmpBackground,0,SRCCOPY ;//绘制背景图片1
 	mov eax, tmpBackground
-	sub eax, 1536
+	sub eax, BACKG_WIDTH
 	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,eax,0,SRCCOPY ;//绘制背景图片2
 	
 
 	;确定左边界点
+	mov edx, 0
 	mov eax, leftFringe
 	cdq
 	mov ebx, MAPPOINT_LENGTH
 	idiv ebx
 	mov leftPoint, eax
 	;确定右边界点
+	mov edx, 0
 	mov eax, leftFringe
 	cdq
 	add eax, WINDOW_WIDTH
@@ -164,6 +177,7 @@ LOCAL coinEndY: SDWORD
 	
 	;绘制地图点
 	mov ebx, leftPoint
+	dec ebx
 	.WHILE ebx <= rightPoint
 		invoke DrawMapPoint,tmpDc, ebx
 		inc ebx
@@ -174,7 +188,7 @@ LOCAL coinEndY: SDWORD
 	mov eax, actor_x
 	sub eax, leftFringe
 	mov tmpActorX, eax
-	invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,80D,80D,0,0,DI_NORMAL;//绘制小人
+	invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
 	
 	;将背景画到前景
 	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,tmpDc,0,0,SRCCOPY ;
@@ -193,7 +207,7 @@ DrawMapPoint proc USES eax ebx ecx edx esi,
 LOCAL coinEndY:DWORD
 LOCAL pointX:DWORD
 LOCAL pointOffset:DWORD
-		
+	
 	;确定点的横坐标
 	mov eax, MAPPOINT_LENGTH
 	imul eax, pointIndex
@@ -201,24 +215,35 @@ LOCAL pointOffset:DWORD
 	mov pointX, eax
 	;确定点的地址偏移
 	mov esi, OFFSET gMap
+	add esi, pointOffset
 	mov eax, SIZEOF MapPoint
 	imul eax, pointIndex
 	mov pointOffset, eax
 	
-
-	add esi, pointOffset
-	mov ebx, (MapPoint PTR [esi]).coinEnd
-	mov coinEndY, ebx
-	mov ebx, (MapPoint PTR [esi]).coinStart
+	;绘制金币/银币等
 	
-		invoke dw2a,pointOffset, OFFSET testStr 
-		invoke dw2a,coinEndY, OFFSET testStr2
-		;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0 
-	.while ebx < coinEndY
-
-		invoke DrawIconEx,tmpDc,pointX,ebx,hGoldenCoin,32D,32D,0,0,DI_NORMAL;//绘制小人
+	mov eax, 0
+	mov edi, esi
+	add edi, 8
+	.while eax < 18
+		mov ebx, eax
+		imul ebx, 32
+		mov edx, [edi]
+		.if edx == GOLDEN_COIN
+			invoke DrawIconEx,tmpDc,pointX,ebx,hGoldenCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+			
+		.endif
+		add esi, 4
+		add eax, 1
+	.endw
+	
+	
+	mov ebx, (MapPoint PTR [esi]).ground_y
+	.while ebx <= WINDOW_HEIGHT
+		invoke BitBlt,tmpDc,pointX,ebx,32,32,FloorDc,0,0,SRCCOPY ;//绘制
 		add ebx, MAPPOINT_LENGTH
 	.endw
+	
 	ret
 DrawMapPoint endp
 
@@ -236,13 +261,27 @@ LOCAL Dc:DWORD
 	mov hBackg,eax
 	invoke SelectObject,BackgroundDc,hBackg ;//将一个Dc和bitmap hd与资源绑定起来
 	
+	;地面
+	invoke CreateCompatibleDC,Dc
+	mov FloorDc,eax
+	
+	invoke LoadBitmap,hInstance,BM_FLOOR
+	mov hFloorBmp,eax
+	invoke SelectObject,FloorDc,hFloorBmp ;//将一个Dc和bitmap hd与资源绑定起来
+	
 	;小人
-	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,80D,80D,LR_DEFAULTCOLOR
+	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
 	mov hActor,eax
 	
 	;金币
-	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,32D,32D,LR_DEFAULTCOLOR
+	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
 	mov hGoldenCoin,eax
+	
+	invoke LoadImage,hInstance,ICON_SILVER_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
+	mov hSilverCoin,eax
+	
+	invoke LoadImage,hInstance,ICON_RAINBOW_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
+	mov hRainbowCoin,eax
 	 
 	mov eax ,TRUE 
 	   
@@ -289,10 +328,21 @@ LOCAL R:RECT
 
 Repaint endp
 
-UpdateData proc USES eax ebx
+UpdateData proc USES eax ebx edx esi
 	mov eax, actorSpeed_x
 	add actor_x, eax
 	add leftFringe, eax
+	
+	mov ebx, MAPPOINT_LENGTH
+	mov eax, actor_x
+	cdq
+	idiv ebx
+	imul eax, SIZEOF MapPoint
+	mov esi, OFFSET gMap
+	add esi, eax
+	mov eax, (MapPoint PTR [esi]).ground_y
+	mov base_y, eax
+	sub base_y, ACTOR_RUN_HEIGHT
 
 	.if actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
 		mov eax, actor_y
@@ -306,8 +356,8 @@ UpdateData proc USES eax ebx
 		mov actor_y, ebx
 		mov actorState, ACTOR_RUN
 		L1:
-	.else	
 	.endif
+	
 	
 	ret
 
@@ -318,13 +368,13 @@ InitMap proc USES eax ebx ecx esi
 	mov esi, OFFSET gMap
 	mov ebx, SIZEOF MapPoint
 	mov eax, 0
-	mov ecx, 32
+	mov ecx, 60
 L1:
-	mov (MapPoint PTR [esi]).coinStart, 128
-	mov (MapPoint PTR [esi]).coinEnd, 256
-	mov (MapPoint PTR [esi]).coinType,GOLDEN_COIN
+	;mov (MapPoint PTR [esi]).coinStart, 128
+	;mov (MapPoint PTR [esi]).coinEnd, 256
+	;mov (MapPoint PTR [esi]).coinType,GOLDEN_COIN
 	add esi, ebx
-	Loop L1 
+	;Loop L1
 	ret
 
 InitMap endp
