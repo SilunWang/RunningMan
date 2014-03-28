@@ -23,6 +23,10 @@
 #define d				1022
 #define e				1023
 #define x				1024
+#define figure1				1050
+#define figure2				1051
+#define figure3				1052
+#define figure4				1053
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/littleman.ico"
 background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
@@ -48,3 +52,7 @@ c			ICON      DISCARDABLE "Res/c.ico"
 d			ICON      DISCARDABLE "Res/d.ico"
 e			ICON      DISCARDABLE "Res/e.ico"
 x			ICON      DISCARDABLE "Res/cactus.ico"
+figure1			ICON      DISCARDABLE "Res/figure1.ico"
+figure2			ICON      DISCARDABLE "Res/figure2.ico"
+figure3			ICON      DISCARDABLE "Res/figure3.ico"
+figure4			ICON      DISCARDABLE "Res/figure4.ico"

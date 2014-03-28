@@ -84,6 +84,18 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
 WinMain endp
 
 
+ChooseImage proc Dc:DWORD, hWnd:DWORD
+
+	pushad
+	invoke DrawIconEx,Dc,20,40,hFigure1,128,128,0,0,DI_NORMAL;
+	invoke DrawIconEx,Dc,180,40,hFigure2,128,128,0,0,DI_NORMAL;
+	invoke DrawIconEx,Dc,340,40,hFigure3,128,128,0,0,DI_NORMAL;
+	invoke DrawIconEx,Dc,500,40,hFigure4,128,128,0,0,DI_NORMAL;
+	popad
+	ret
+
+ChooseImage endp
+
 WndProc proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 LOCAL ps :PAINTSTRUCT
 LOCAL Dc :HDC
@@ -101,9 +113,8 @@ LOCAL Dc :HDC
 		invoke KeyDownCallBack, wParam
 	.ELSEIF uMsg==WM_PAINT
 		invoke BeginPaint,hWnd,Addr ps
-	   	mov Dc,eax ;// 返回画笔对象	   	
-	   	invoke WMPaint,Dc,hWnd
-	   	
+	   	mov Dc,eax ;// 返回画笔对象
+	   	invoke WMPaint,Dc,hWnd   	
 	   	invoke EndPaint,hWnd,Addr ps
 	.ELSEIF uMsg == WM_TIMER
 		invoke UpdateData
@@ -127,6 +138,8 @@ LOCAL Dc :HDC
 	xor eax,eax
 	ret
 WndProc endp
+
+
 
 WMPaint Proc USES eax ebx ecx edx esi,
 	Dc:DWORD, hWnd:DWORD	
@@ -280,6 +293,8 @@ LOCAL coinEndY: SDWORD
 	ret
 WMPaint endp
 
+
+
 DrawMapPoint proc USES eax ebx ecx edx esi edi,
 	tmpDc: DWORD,
 	pointIndex: DWORD
@@ -367,6 +382,15 @@ LOCAL Dc:DWORD
 	invoke LoadBitmap,hInstance,BM_FLOOR
 	mov hFloorBmp,eax
 	invoke SelectObject,FloorDc,hFloorBmp ;//将一个Dc和bitmap hd与资源绑定起来
+	
+	invoke LoadImage,hInstance,FIGURE_1,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+	mov hFigure1,eax
+	invoke LoadImage,hInstance,FIGURE_2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+	mov hFigure2,eax
+	invoke LoadImage,hInstance,FIGURE_3,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+	mov hFigure3,eax
+	invoke LoadImage,hInstance,FIGURE_4,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+	mov hFigure4,eax
 	
 	;小人
 	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR

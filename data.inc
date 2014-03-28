@@ -76,6 +76,8 @@ MapSize equ 2560
 	
 	leftFringe SDWORD 32
 	
+	figureChosen SDWORD 0
+	
 	;Map information
 	Map1 db "Map1.txt"
    	
