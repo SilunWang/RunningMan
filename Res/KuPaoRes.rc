@@ -17,6 +17,12 @@
 #define number_8			1016
 #define number_9			1017
 #define actor2				1018
+#define a				1019
+#define b				1020
+#define c				1021
+#define d				1022
+#define e				1023
+#define x				1024
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/littleman.ico"
 background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
@@ -36,3 +42,9 @@ number_7		ICON      DISCARDABLE "Res/Number_007.ico"
 number_8		ICON      DISCARDABLE "Res/Number_008.ico"
 number_9		ICON      DISCARDABLE "Res/Number_009.ico"
 actor2			ICON      DISCARDABLE "Res/littleman2.ico"
+a			ICON      DISCARDABLE "Res/a.ico"
+b			ICON      DISCARDABLE "Res/b.ico"
+c			ICON      DISCARDABLE "Res/c.ico"
+d			ICON      DISCARDABLE "Res/d.ico"
+e			ICON      DISCARDABLE "Res/e.ico"
+x			ICON      DISCARDABLE "Res/cactus.ico"

@@ -21,6 +21,12 @@ ACTOR_WIDTH equ 80
 ACTOR_RUN_HEIGHT equ 80
 ACTOR_CROUCH_HEIGHT equ 40
 
+UP_OB_WIDTH equ 64
+UP_OB_HEIGHT equ 96
+DOWN_OB_WIDTH equ 64
+DOWN_OB_HEIGHT equ 128
+
+
 
 ;Ã¯‘æ≥ı ºÀŸ∂»
 INITIAL_SPEED equ 16
@@ -45,6 +51,10 @@ MapPoint STRUCT
 	;biscuitPosition SDWORD 0
 MapPoint ends 
 
+MapBufferSize equ 2816
+MapSize equ 2560
+
+
 .data
 	
 	actor_x SDWORD 200
@@ -66,5 +76,11 @@ MapPoint ends
 	
 	leftFringe SDWORD 32
 	
-	gMap MapPoint 256 DUP(<>)
+	;Map information
+	Map1 db "Map1.txt"
+   	
+   	MapBuffer db MapBufferSize DUP(?)
+   	MapFlag db MapSize DUP(?)
+	
+	gMap MapPoint 128 DUP(<>)
 	

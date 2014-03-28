@@ -34,10 +34,14 @@ ICON_ACTOR equ 1001
 ICON_ACTOR2 equ 1018
 
 
-ICON_GOLDEN_COIN equ 1003
-ICON_SILVER_COIN equ 1004
-ICON_RAINBOW_COIN equ 1005
+ICON_GOLDEN_COIN equ 1019
+ICON_SILVER_COIN equ 1020
+ICON_RAINBOW_COIN equ 1021
+ICON_DUCK_BISCUIT equ 1022
+ICON_BEAR_BISCUIT equ 1023
 
+ICON_UP_OBSTACLE equ 1024
+ICON_DOWN_OBSTACLE equ 1025
 
 ICON_0 equ 1008
 ICON_1 equ 1009
@@ -65,6 +69,10 @@ TIMERID equ 1
 	hGoldenCoin dd ?
 	hSilverCoin dd ?
 	hRainbowCoin dd ?
+	hDuckBiscuit dd ?
+	hBearBiscuit dd ?
+	hUpObstacle dd ?
+	hDownObstacle dd ?
 	hFloorBmp dd ?
 	hICON_0 dd ?
 	hICON_1 dd ?
@@ -79,6 +87,12 @@ TIMERID equ 1
 	
 	testStr db "Stage Clear",0
    	testStr2 db "Message",0
+   	testStr3 db "1",0
+   	
+   	gameOver db "GameOver", 0
+   	gameOverTitle db " ",0
+   	
+   	isGameOver dd 0
    	
 WMPaint proto,p1:DWORD,p2:DWORD
 DrawMapPoint proto,p1:DWORD,p2:DWORD
@@ -91,6 +105,7 @@ ActorMove proto:DWORD
 Repaint proto:HWND
 UpdateData proto
 
-
+LoadMap proto: PTR BYTE
+ConvertMap proto: PTR DWORD
 
 
