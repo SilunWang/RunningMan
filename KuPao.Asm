@@ -92,7 +92,8 @@ LOCAL Dc :HDC
 		invoke PostQuitMessage,NULL
 	.ELSEIF uMsg==WM_CREATE
 		invoke LoadRes,hWnd;//
-		invoke InitMap
+		invoke LoadMap, OFFSET Map1
+		invoke ConvertMap, OFFSET gMap
 		invoke UpdateData
 		mov eax, base_y
 		mov actor_y, eax
@@ -111,6 +112,12 @@ LOCAL Dc :HDC
 			invoke KillTimer,hWnd, TIMERID
 			invoke dw2a, totalScore, OFFSET testStr
 			invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
+		.endif
+		.if isGameOver == 1
+			invoke KillTimer,hWnd, TIMERID
+			invoke dw2a, totalScore, OFFSET testStr
+			invoke MessageBox,0,OFFSET gameOver, OFFSET gameOverTitle,0
+			
 		.endif
 	.ELSE
 		invoke DefWindowProc,hWnd,uMsg,wParam,lParam		
@@ -293,8 +300,18 @@ LOCAL pointOffset:DWORD
 	imul eax, pointIndex
 	mov pointOffset, eax
 	
-	;绘制金币/银币等
+	;绘制障碍物
+	mov ebx, (MapPoint PTR [esi]).obstacleType
+	.if ebx == UP_OBSTACLE
+		mov eax, 3
+		mov ebx, MAPPOINT_LENGTH
+		mul ebx
+		mov ebx, (MapPoint PTR [esi]).ground_y
+		sub ebx, eax
+		invoke DrawIconEx,tmpDc,pointX,ebx,hUpObstacle,UP_OB_WIDTH,UP_OB_HEIGHT,0,0,DI_NORMAL;	
+	.endif
 	
+	;绘制金币/银币等
 	mov ebx, 0
 	lea edi, (MapPoint PTR [esi]).elements
 	.while ebx < ELEMENTS_LENGTH
@@ -304,7 +321,17 @@ LOCAL pointOffset:DWORD
 		
 		.if edx == GOLDEN_COIN
 			invoke DrawIconEx,tmpDc,pointX,eax,hGoldenCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+		.elseif edx == SILVER_COIN
+			invoke DrawIconEx,tmpDc,pointX,eax,hSilverCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+		.elseif edx == RAINBOW_COIN
+			invoke DrawIconEx,tmpDc,pointX,eax,hRainbowCoin,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+		.elseif edx == DUCK_BISCUIT
+			invoke DrawIconEx,tmpDc,pointX,eax,hDuckBiscuit,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+		.elseif edx == BEAR_BISCUIT
+			invoke DrawIconEx,tmpDc,pointX,eax,hBearBiscuit,MAPPOINT_LENGTH,MAPPOINT_LENGTH,0,0,DI_NORMAL;
+	
 		.endif
+		
 		
 		add edi, SIZEOF DWORD
 		inc ebx
@@ -319,7 +346,7 @@ LOCAL pointOffset:DWORD
 	ret
 DrawMapPoint endp
 
-LoadRes proc USES eax esi edi,
+LoadRes proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD
 	invoke GetDC,hWnd
@@ -347,7 +374,7 @@ LOCAL Dc:DWORD
 	invoke LoadImage,hInstance,ICON_ACTOR2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
 	mov hActor2,eax
 	
-	;金币
+	;币和饼干
 	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
 	mov hGoldenCoin,eax
 	
@@ -356,6 +383,19 @@ LOCAL Dc:DWORD
 	
 	invoke LoadImage,hInstance,ICON_RAINBOW_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
 	mov hRainbowCoin,eax
+	
+	invoke LoadImage,hInstance,ICON_DUCK_BISCUIT,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
+	mov hDuckBiscuit,eax
+	
+	invoke LoadImage,hInstance,ICON_BEAR_BISCUIT,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
+	mov hBearBiscuit,eax
+	
+	;障碍物
+	invoke LoadImage,hInstance,ICON_UP_OBSTACLE,IMAGE_ICON,UP_OB_WIDTH,UP_OB_HEIGHT,LR_DEFAULTCOLOR
+	mov hUpObstacle,eax
+	
+	invoke LoadImage,hInstance,ICON_DOWN_OBSTACLE,IMAGE_ICON,DOWN_OB_WIDTH,DOWN_OB_HEIGHT,LR_DEFAULTCOLOR
+	mov hDownObstacle,eax
 	
 	;Numbers
 	invoke LoadImage,hInstance,ICON_0,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
@@ -458,7 +498,9 @@ DisplayScore proc
 
 DisplayScore endp
 
-UpdateData proc USES eax ebx edx esi edi
+UpdateData proc USES eax ebx ecx edx esi edi
+
+LOCAL actorHeadElement: DWORD
 	mov eax, actorSpeed_x
 	add actor_x, eax
 	add leftFringe, eax
@@ -499,6 +541,7 @@ UpdateData proc USES eax ebx edx esi edi
 	idiv ebx
 	lea edi, (MapPoint PTR [esi]).elements
 	imul eax, 4
+	;得到人头所在格子的地址偏移
 	add edi, eax
 	mov ebx, NONE_ELEMENT
 	.if [edi] != ebx
@@ -519,24 +562,109 @@ UpdateData proc USES eax ebx edx esi edi
 	.endif
 	mov [edi], ebx
 	invoke DisplayScore
+	
+	;UpObstacle碰撞检测
+	mov ebx, UP_OBSTACLE
+	mov ecx, (MapPoint PTR [esi]).obstacleType 
+	.if ebx == ecx
+		mov eax, actor_y
+		add eax, ACTOR_RUN_HEIGHT
+		mov edx, (MapPoint PTR [esi]).ground_y
+		sub edx, 96
+		mov ecx, (MapPoint PTR [esi]).ground_y
+		.if eax <= ecx && eax >= edx
+			mov isGameOver, 1
+		.endif	
+	.endif
 	ret
 
 UpdateData endp
 
 
 
-InitMap proc USES eax ebx ecx esi
+LoadMap proc USES eax ecx edx esi edi,
+	MapName: PTR BYTE ;需要打开的map文件的文件名
 	
-	mov esi, OFFSET gMap
-	mov ebx, SIZEOF MapPoint
-	mov eax, 0
-	mov ecx, 60
-L1:
-	add esi, ebx
-	;Loop L1
-	ret
+LOCAL hFile:DWORD
+LOCAL readSize: DWORD
+	invoke CreateFile, MapName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0
+	mov  hFile, eax
+	lea edx, readSize
+	invoke ReadFile, hFile, OFFSET MapBuffer, MapBufferSize, edx, NULL
+	invoke CloseHandle, hFile
+	
+	mov ecx, readSize
 
-InitMap endp
+	mov esi, OFFSET MapBuffer
+	mov edi, OFFSET MapFlag
+L1:	
+	push ecx
+	mov eax, 0
+	mov al, [esi]
+	cmp al, 10
+	je L2
+	cmp al, 13
+	je L2
+	mov [edi], eax
+	inc edi
+L2:
+	inc esi
+	pop ecx
+	Loop L1
+	
+	ret
+LoadMap endp
+
+ConvertMap proc USES eax ebx ecx edx esi edi,
+	AddrMap:  PTR DWORD, ;需要存入的map数组的地址
+	
+	mov esi, OFFSET MapFlag
+	mov edi, AddrMap
+	
+	mov ecx, MapSize
+L1:
+	push ecx
+	mov edx, 0
+	mov dl, [esi]
+	;invoke dw2a, edx, OFFSET testStr2
+	;invoke MessageBox,0,OFFSET testStr3, OFFSET testStr2,0
+	
+	.if edx == 'a'
+		mov eax, GOLDEN_COIN
+	.elseif dl == 'b'
+		mov eax, SILVER_COIN
+	.elseif dl == 'c'
+		mov eax, RAINBOW_COIN
+	.elseif dl == 'd'
+		mov eax, DUCK_BISCUIT
+	.elseif dl == 'e'
+		mov eax, BEAR_BISCUIT
+	.elseif dl >= '1' && dl <= '9'
+		mov eax, 0
+		mov al, dl 
+		sub eax, '0'
+		mov ebx, 32
+		mul ebx
+		neg eax
+		add eax, WINDOW_HEIGHT
+	.elseif dl == 'x'
+		mov eax, UP_OBSTACLE
+	.elseif dl == 'y'
+		mov eax, DOWN_OBSTACLE
+	.else 
+		mov eax, 0
+	.endif
+	
+	mov [edi], eax
+	inc esi
+	add edi, SIZEOF SDWORD
+	pop ecx
+	dec ecx
+	cmp ecx, 0
+	jg L1
+	
+	ret
+ConvertMap endp
 
 end start
 
