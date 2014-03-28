@@ -16,8 +16,9 @@
 #define number_7			1015
 #define number_8			1016
 #define number_9			1017
+#define actor2				1018
 background		BITMAP    DISCARDABLE "Res/background.bmp"
-actor			ICON      DISCARDABLE "Res/xiaoren.ico"
+actor			ICON      DISCARDABLE "Res/littleman.ico"
 background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
 goldenCoin		ICON      DISCARDABLE "Res/golden_coin_32X32.ico"
 silverCoin		ICON      DISCARDABLE "Res/silver_coin.ico"
@@ -34,3 +35,4 @@ number_6		ICON      DISCARDABLE "Res/Number_006.ico"
 number_7		ICON      DISCARDABLE "Res/Number_007.ico"
 number_8		ICON      DISCARDABLE "Res/Number_008.ico"
 number_9		ICON      DISCARDABLE "Res/Number_009.ico"
+actor2			ICON      DISCARDABLE "Res/littleman2.ico"

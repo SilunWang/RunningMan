@@ -62,6 +62,7 @@ MapPoint ends
 	thirdDigit SDWORD 0
 	
 	actorState SDWORD 0
+	actorImage SDWORD 0
 	
 	leftFringe SDWORD 32
 	

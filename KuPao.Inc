@@ -27,12 +27,18 @@ STEADY_X equ 200
 BACKG_WIDTH equ 1024
 
 BM_BACKGROUND equ 1000
-ICON_ACTOR equ 1001
 BM_BACKGROUND1 equ 1002
+BM_FLOOR equ 1006
+
+ICON_ACTOR equ 1001
+ICON_ACTOR2 equ 1018
+
+
 ICON_GOLDEN_COIN equ 1003
 ICON_SILVER_COIN equ 1004
 ICON_RAINBOW_COIN equ 1005
-BM_FLOOR equ 1006
+
+
 ICON_0 equ 1008
 ICON_1 equ 1009
 ICON_2 equ 1010
@@ -55,6 +61,7 @@ TIMERID equ 1
 	
 	hBackg dd ?
 	hActor dd ?
+	hActor2 dd ?
 	hGoldenCoin dd ?
 	hSilverCoin dd ?
 	hRainbowCoin dd ?

@@ -52,7 +52,7 @@ AutoLoad=2,1
 0=
 [Resource]
 1=background,1000,0,Res\background.bmp
-2=actor,1001,2,Res\xiaoren.ico
+2=actor,1001,2,Res\littleman.ico
 3=background1,1002,0,Res\whitebg.bmp
 4=goldenCoin,1003,2,Res\golden_coin_32X32.ico
 5=silverCoin,1004,2,Res\silver_coin.ico
@@ -69,14 +69,15 @@ AutoLoad=2,1
 16=number_7,1015,2,Res\Number_007.ico
 17=number_8,1016,2,Res\Number_008.ico
 18=number_9,1017,2,Res\Number_009.ico
+19=actor2,1018,2,Res\littleman2.ico
 [Collapse]
 3=
 2=
-1=
+1=,
 [Size]
 3=0,0,0,0,0
-2=0,0,1054,410,214
-1=0,0,1054,410,7530
+2=0,0,1054,410,538
+1=0,0,1054,410,3454
 [VersionControl]
 Settings=1246
 重要事件=129
@@ -87,7 +88,7 @@ MilestoneOnTime=2
 MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
-MilestoneOnDateDate=26
+MilestoneOnDateDate=28
 MilestoneOnDateTimeYear=2014
 MilestoneOnDateTimeMonth=3
 MilestoneOnDateTimeDate=21

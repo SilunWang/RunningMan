@@ -186,8 +186,15 @@ LOCAL coinEndY: SDWORD
 	mov eax, actor_x
 	sub eax, leftFringe
 	mov tmpActorX, eax
-	invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
-	
+	.if actorImage < 20
+		invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
+		inc actorImage
+	.elseif actorImage < 40
+		invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor2,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人2
+		inc actorImage
+	.else
+		mov actorImage, 0
+	.endif
 	
 	.if firstDigit == 0
 		invoke DrawIconEx,tmpDc,180,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
@@ -337,6 +344,8 @@ LOCAL Dc:DWORD
 	;小人
 	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
 	mov hActor,eax
+	invoke LoadImage,hInstance,ICON_ACTOR2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+	mov hActor2,eax
 	
 	;金币
 	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
