@@ -42,17 +42,14 @@ NUMBER_LENGTH equ 48
 MapPoint STRUCT
 
 	ground_y SDWORD GROUND_BASE
-	obstacleType SDWORD NONE_OBSTACLE
-	;coinType SDWORD NONE_COIN
-	;biscuitType SDWORD NONE_BISCUIT	
+	obstacleType SDWORD NONE_OBSTACLE	
 	elements SDWORD ELEMENTS_LENGTH DUP(GOLDEN_COIN)
-	;coinStart SDWORD 0
-	;coinEnd SDWORD 0
-	;biscuitPosition SDWORD 0
 MapPoint ends 
 
 MapBufferSize equ 2816
 MapSize equ 2560
+
+MapNum equ 20
 
 
 .data
@@ -76,13 +73,25 @@ MapSize equ 2560
 	
 	leftFringe SDWORD 32
 	
-	figureChosen SDWORD 0
-	
 	;Map information
-	Map1 db "Map1.txt"
+	Map1 db "Map1.txt",0
+	Map2 db "Map2.txt",0
+	Map3 db "Map3.txt",0
+	Map4 db "Map4.txt",0
+	Map5 db "Map5.txt",0
+	Map6 db "Map6.txt",0
+	
    	
    	MapBuffer db MapBufferSize DUP(?)
    	MapFlag db MapSize DUP(?)
 	
-	gMap MapPoint 128 DUP(<>)
+	gMap MapPoint 2560 DUP(<>)
+	gMap1 MapPoint 128 DUP(<>)
+	gMap2 MapPoint 128 DUP(<>)
+	gMap3 MapPoint 128 DUP(<>)
+	gMap4 MapPoint 128 DUP(<>)
+	gMap5 MapPoint 128 DUP(<>)
+	gMap6 MapPoint 128 DUP(<>)
+	
+	firstStage DWORD 1, 2, 3, 4, 5, 6, 4, 5, 1, 3, 5, 2, 6, 1, 4, 6, 3, 1, 4, 5
 	

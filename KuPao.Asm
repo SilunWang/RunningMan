@@ -84,18 +84,6 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
 WinMain endp
 
 
-ChooseImage proc Dc:DWORD, hWnd:DWORD
-
-	pushad
-	invoke DrawIconEx,Dc,20,40,hFigure1,128,128,0,0,DI_NORMAL;
-	invoke DrawIconEx,Dc,180,40,hFigure2,128,128,0,0,DI_NORMAL;
-	invoke DrawIconEx,Dc,340,40,hFigure3,128,128,0,0,DI_NORMAL;
-	invoke DrawIconEx,Dc,500,40,hFigure4,128,128,0,0,DI_NORMAL;
-	popad
-	ret
-
-ChooseImage endp
-
 WndProc proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 LOCAL ps :PAINTSTRUCT
 LOCAL Dc :HDC
@@ -104,8 +92,7 @@ LOCAL Dc :HDC
 		invoke PostQuitMessage,NULL
 	.ELSEIF uMsg==WM_CREATE
 		invoke LoadRes,hWnd;//
-		invoke LoadMap, OFFSET Map1
-		invoke ConvertMap, OFFSET gMap
+		invoke CreateGlobalMap
 		invoke UpdateData
 		mov eax, base_y
 		mov actor_y, eax
@@ -113,17 +100,18 @@ LOCAL Dc :HDC
 		invoke KeyDownCallBack, wParam
 	.ELSEIF uMsg==WM_PAINT
 		invoke BeginPaint,hWnd,Addr ps
-	   	mov Dc,eax ;// 返回画笔对象
-	   	invoke WMPaint,Dc,hWnd   	
+	   	mov Dc,eax ;// 返回画笔对象	   	
+	   	invoke WMPaint,Dc,hWnd
+	   	
 	   	invoke EndPaint,hWnd,Addr ps
 	.ELSEIF uMsg == WM_TIMER
 		invoke UpdateData
 		invoke Repaint,hWnd
-		.if leftFringe > 3000
-			invoke KillTimer,hWnd, TIMERID
-			invoke dw2a, totalScore, OFFSET testStr
-			invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
-		.endif
+		;.if leftFringe > 3000
+			;invoke KillTimer,hWnd, TIMERID
+			;invoke dw2a, totalScore, OFFSET testStr
+			;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
+		;.endif
 		.if isGameOver == 1
 			invoke KillTimer,hWnd, TIMERID
 			invoke dw2a, totalScore, OFFSET testStr
@@ -138,8 +126,6 @@ LOCAL Dc :HDC
 	xor eax,eax
 	ret
 WndProc endp
-
-
 
 WMPaint Proc USES eax ebx ecx edx esi,
 	Dc:DWORD, hWnd:DWORD	
@@ -293,8 +279,6 @@ LOCAL coinEndY: SDWORD
 	ret
 WMPaint endp
 
-
-
 DrawMapPoint proc USES eax ebx ecx edx esi edi,
 	tmpDc: DWORD,
 	pointIndex: DWORD
@@ -382,15 +366,6 @@ LOCAL Dc:DWORD
 	invoke LoadBitmap,hInstance,BM_FLOOR
 	mov hFloorBmp,eax
 	invoke SelectObject,FloorDc,hFloorBmp ;//将一个Dc和bitmap hd与资源绑定起来
-	
-	invoke LoadImage,hInstance,FIGURE_1,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hFigure1,eax
-	invoke LoadImage,hInstance,FIGURE_2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hFigure2,eax
-	invoke LoadImage,hInstance,FIGURE_3,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hFigure3,eax
-	invoke LoadImage,hInstance,FIGURE_4,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hFigure4,eax
 	
 	;小人
 	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
@@ -522,6 +497,7 @@ DisplayScore proc
 
 DisplayScore endp
 
+
 UpdateData proc USES eax ebx ecx edx esi edi
 
 LOCAL actorHeadElement: DWORD
@@ -543,6 +519,8 @@ LOCAL actorHeadElement: DWORD
 	mov base_y, eax
 	sub base_y, ACTOR_RUN_HEIGHT
 	
+	
+	
 	;更新人的状态
 	.if actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
 		mov eax, actor_y
@@ -557,6 +535,13 @@ LOCAL actorHeadElement: DWORD
 		mov actorState, ACTOR_RUN
 		L1:
 	.endif
+	
+	mov eax, actor_y
+	.if actorState == ACTOR_RUN && eax < base_y
+		mov actorSpeed_y, 0
+		mov actorState, ACTOR_JUMP1
+	.endif
+	
 	
 	;更新金币状态
 	mov ebx, MAPPOINT_LENGTH
@@ -621,10 +606,12 @@ LOCAL readSize: DWORD
 
 	mov esi, OFFSET MapBuffer
 	mov edi, OFFSET MapFlag
+	;
 L1:	
 	push ecx
 	mov eax, 0
 	mov al, [esi]
+
 	cmp al, 10
 	je L2
 	cmp al, 13
@@ -632,6 +619,7 @@ L1:
 	mov [edi], eax
 	inc edi
 L2:
+
 	inc esi
 	pop ecx
 	Loop L1
@@ -689,6 +677,84 @@ L1:
 	
 	ret
 ConvertMap endp
+
+CreateGlobalMap proc USES eax ebx ecx edx esi edi
+
+
+	invoke LoadMap, OFFSET Map1
+	invoke ConvertMap, OFFSET gMap1
+
+	invoke LoadMap, OFFSET Map2
+	invoke ConvertMap, OFFSET gMap2
+		
+	invoke LoadMap, OFFSET Map3
+	invoke ConvertMap, OFFSET gMap3
+	
+	invoke LoadMap, OFFSET Map4
+	invoke ConvertMap, OFFSET gMap4
+	
+	invoke LoadMap, OFFSET Map4
+	invoke ConvertMap, OFFSET gMap5
+	
+	invoke LoadMap, OFFSET Map2
+	invoke ConvertMap, OFFSET gMap6	
+
+	
+	
+	mov ecx, MapNum
+	mov esi, OFFSET firstStage
+	mov edi, OFFSET gMap
+
+L1:	
+	mov eax, [esi]
+	sub eax, 1
+	mov ebx, SIZEOF gMap1
+	mul ebx
+	;得到的eax为复制的地图源的地址
+	add eax, OFFSET gMap1
+	
+	pushad
+	;invoke dw2a, eax, OFFSET testStr2
+	;invoke MessageBox,0,OFFSET testStr2, OFFSET testStr2,0
+	popad
+	
+	;得到的edi为地图目标的地址
+	invoke CopyMap, eax, edi, SIZEOF gMap1
+	
+	
+	add esi, 4
+	add edi, SIZEOF gMap1
+	Loop L1
+
+	ret
+
+CreateGlobalMap endp
+
+CopyMap proc uses eax ebx ecx edx esi edi,
+	SrcAddr: DWORD,
+	DestAddr: DWORD,
+	mMapSize: DWORD
+	
+	mov esi, SrcAddr
+	mov edi, DestAddr
+	
+	mov eax, mMapSize
+	cdq
+	mov ebx, 4
+	div ebx
+	;得到的ecx为循环次数
+	mov ecx, eax
+
+L1:
+	mov eax, [esi]
+	mov [edi], eax
+	add esi, 4
+	add edi, 4
+	Loop L1
+		
+	ret
+
+CopyMap endp
 
 end start
 
