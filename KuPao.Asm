@@ -107,14 +107,14 @@ LOCAL Dc :HDC
 	.ELSEIF uMsg == WM_TIMER
 		invoke UpdateData
 		invoke Repaint,hWnd
-		;.if leftFringe > 3000
-			;invoke KillTimer,hWnd, TIMERID
-			;invoke dw2a, totalScore, OFFSET testStr
-			;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
-		;.endif
+		.if leftFringe > 79872
+			invoke KillTimer,hWnd, TIMERID
+			invoke dw2a, totalScore, OFFSET gameSucceed
+			invoke MessageBox,0,OFFSET gameSucceed, OFFSET gameSucceedTitle,0
+		.endif
 		.if isGameOver == 1
 			invoke KillTimer,hWnd, TIMERID
-			invoke dw2a, totalScore, OFFSET testStr
+			invoke dw2a, totalScore, OFFSET gameOver
 			invoke MessageBox,0,OFFSET gameOver, OFFSET gameOverTitle,0
 			
 		.endif
@@ -192,80 +192,99 @@ LOCAL coinEndY: SDWORD
 	mov eax, actor_x
 	sub eax, leftFringe
 	mov tmpActorX, eax
-	.if actorImage < 20
-		invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
-		inc actorImage
-	.elseif actorImage < 40
-		invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor2,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人2
-		inc actorImage
-	.else
-		mov actorImage, 0
-	.endif
 	
+	.if actorState == ACTOR_LIE
+		mov eax, actor_y
+		;小人躺着和站着高度差32
+		add eax, 32
+		.if actorLie < 40
+			invoke DrawIconEx,tmpDc,tmpActorX,eax,hActor3,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,0,0,DI_NORMAL;//绘制小人
+			inc actorLie
+		.else
+			mov actorLie, 0
+			mov actorState, ACTOR_RUN
+			invoke DrawIconEx,tmpDc,tmpActorX,eax,hActor3,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,0,0,DI_NORMAL;//绘制小人
+		.endif
+	
+	.elseif actorState == ACTOR_RUN
+		.if actorImage < 20
+			invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
+			inc actorImage
+		.elseif actorImage < 40
+			invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor2,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人2
+			inc actorImage
+		.else
+			mov actorImage, 0
+			invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
+		.endif
+	.elseif actorState == ACTOR_JUMP1 || actorState == ACTOR_JUMP2
+		invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor4,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,0,0,DI_NORMAL;//绘制小人
+
+	.endif
 	.if firstDigit == 0
-		invoke DrawIconEx,tmpDc,180,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 1
-		invoke DrawIconEx,tmpDc,180,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 2
-		invoke DrawIconEx,tmpDc,180,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 3
-		invoke DrawIconEx,tmpDc,180,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 4
-		invoke DrawIconEx,tmpDc,180,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 5
-		invoke DrawIconEx,tmpDc,180,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 6
-		invoke DrawIconEx,tmpDc,180,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 7
-		invoke DrawIconEx,tmpDc,180,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 8
-		invoke DrawIconEx,tmpDc,180,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif firstDigit == 9
-		invoke DrawIconEx,tmpDc,180,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,180,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.endif
 	
 	.if secondDigit == 0
-		invoke DrawIconEx,tmpDc,120,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 1
-		invoke DrawIconEx,tmpDc,120,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 2
-		invoke DrawIconEx,tmpDc,120,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 3
-		invoke DrawIconEx,tmpDc,120,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 4
-		invoke DrawIconEx,tmpDc,120,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 5
-		invoke DrawIconEx,tmpDc,120,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 6
-		invoke DrawIconEx,tmpDc,120,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 7
-		invoke DrawIconEx,tmpDc,120,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 8
-		invoke DrawIconEx,tmpDc,120,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif secondDigit == 9
-		invoke DrawIconEx,tmpDc,120,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,120,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.endif
 	
 	.if thirdDigit == 0
-		invoke DrawIconEx,tmpDc,60,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 1
-		invoke DrawIconEx,tmpDc,60,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 2
-		invoke DrawIconEx,tmpDc,60,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 3
-		invoke DrawIconEx,tmpDc,60,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 4
-		invoke DrawIconEx,tmpDc,60,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 5
-		invoke DrawIconEx,tmpDc,60,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 6
-		invoke DrawIconEx,tmpDc,60,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 7
-		invoke DrawIconEx,tmpDc,60,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 8
-		invoke DrawIconEx,tmpDc,60,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.elseif thirdDigit == 9
-		invoke DrawIconEx,tmpDc,60,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,tmpDc,60,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL
 	.endif
 	
 	;将背景画到前景
@@ -308,6 +327,21 @@ LOCAL pointOffset:DWORD
 		mov ebx, (MapPoint PTR [esi]).ground_y
 		sub ebx, eax
 		invoke DrawIconEx,tmpDc,pointX,ebx,hUpObstacle,UP_OB_WIDTH,UP_OB_HEIGHT,0,0,DI_NORMAL;	
+	.endif
+	
+	mov ebx, (MapPoint PTR [esi]).obstacleType
+	.if ebx == DOWN_OBSTACLE
+		mov edx, (MapPoint PTR [esi]).ground_y
+		sub edx, DOWN_OBSTACLE_GAP
+		sub edx, DOWN_OBSTACLE_GAP
+		L1:	
+		push edx
+		invoke DrawIconEx,tmpDc,pointX,edx,hDownObstacle,DOWN_OB_WIDTH,DOWN_OB_HEIGHT,0,0,DI_NORMAL;
+		pop edx
+		sub edx, 64
+		cmp edx, -64
+		jg L1
+		L2:
 	.endif
 	
 	;绘制金币/银币等
@@ -372,6 +406,10 @@ LOCAL Dc:DWORD
 	mov hActor,eax
 	invoke LoadImage,hInstance,ICON_ACTOR2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
 	mov hActor2,eax
+	invoke LoadImage,hInstance,ICON_ACTOR3,IMAGE_ICON,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,LR_DEFAULTCOLOR
+	mov hActor3,eax
+	invoke LoadImage,hInstance,ICON_ACTOR4,IMAGE_ICON,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,LR_DEFAULTCOLOR
+	mov hActor4,eax
 	
 	;币和饼干
 	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
@@ -437,12 +475,9 @@ KeyDownCallBack proc wParam:DWORD
 	mov eax ,wParam
 	.if eax == VK_UP
 		invoke ActorMove,VK_UP
-	;.elseif eax == VK_DOWN
-	;	invoke ActorMove,VK_DOWN
-	;.elseif eax == VK_LEFT
-	;	invoke ActorMove,VK_LEFT
-	;.elseif eax == VK_RIGHT   
-	;	invoke ActorMove ,VK_RIGHT 
+	.elseif eax == VK_DOWN
+		invoke ActorMove,VK_DOWN
+
 	.endif
 	ret
 KeyDownCallBack endp
@@ -457,6 +492,11 @@ ActorMove proc vKey :DWORD
 		.else
 			mov actorState,ACTOR_JUMP1
 		.endif
+	.endif
+	
+	.if eax == VK_DOWN && actorState != ACTOR_JUMP1 && actorState != ACTOR_JUMP2
+		mov actorState, ACTOR_LIE
+		mov actorLie, 0
 	.endif
 	
 	ret
@@ -502,8 +542,17 @@ UpdateData proc USES eax ebx ecx edx esi edi
 
 LOCAL actorHeadElement: DWORD
 	mov eax, actorSpeed_x
-	add actor_x, eax
 	add leftFringe, eax
+	.if isBlocked == 0
+		add actor_x, eax
+		mov edx, actor_x
+		sub edx, leftFringe
+		.if edx < base_x
+			add actor_x, 2
+		.endif
+	.endif
+	
+	
 	
 	;取出数组偏移地址
 	mov ebx, MAPPOINT_LENGTH
@@ -537,18 +586,23 @@ LOCAL actorHeadElement: DWORD
 	.endif
 	
 	mov eax, actor_y
-	.if actorState == ACTOR_RUN && eax < base_y
+	.if (actorState == ACTOR_RUN || actorState == ACTOR_LIE) && eax < base_y
 		mov actorSpeed_y, 0
 		mov actorState, ACTOR_JUMP1
 	.endif
 	
+	.if actorState == ACTOR_LIE && isBlocked == 1
+		mov isBlocked, 0
+	.endif
 	
+	mov edi, esi
+	add edi, SIZEOF MapPoint
 	;更新金币状态
 	mov ebx, MAPPOINT_LENGTH
 	mov eax, actor_y
 	cdq
 	idiv ebx
-	lea edi, (MapPoint PTR [esi]).elements
+	lea edi, (MapPoint PTR [edi]).elements
 	imul eax, 4
 	;得到人头所在格子的地址偏移
 	add edi, eax
@@ -572,7 +626,26 @@ LOCAL actorHeadElement: DWORD
 	mov [edi], ebx
 	invoke DisplayScore
 	
+	;小人重心偏移到中轴
+	mov edi, esi
+	add edi, SIZEOF MapPoint
+	
+	;检测死亡
 	;UpObstacle碰撞检测
+	;前身基准
+	mov ebx, UP_OBSTACLE
+	mov ecx, (MapPoint PTR [edi]).obstacleType 
+	.if ebx == ecx
+		mov eax, actor_y
+		add eax, ACTOR_RUN_HEIGHT
+		mov edx, (MapPoint PTR [edi]).ground_y
+		sub edx, 96
+		mov ecx, (MapPoint PTR [edi]).ground_y
+		.if eax <= ecx && eax >= edx
+			mov isGameOver, 1
+		.endif	
+	.endif
+	;后身基准
 	mov ebx, UP_OBSTACLE
 	mov ecx, (MapPoint PTR [esi]).obstacleType 
 	.if ebx == ecx
@@ -584,6 +657,30 @@ LOCAL actorHeadElement: DWORD
 		.if eax <= ecx && eax >= edx
 			mov isGameOver, 1
 		.endif	
+	.endif
+	
+	;检测阻塞碰撞
+	mov ebx, DOWN_OBSTACLE
+
+	mov ecx, (MapPoint PTR [edi]).obstacleType 
+	.if ebx == ecx && actorState != ACTOR_LIE
+		mov isBlocked, 1
+	.endif
+	
+	;检测地面阻塞
+	mov ebx, (MapPoint PTR [edi]).ground_y
+	mov eax, actor_y
+	add eax, ACTOR_RUN_HEIGHT
+	.if eax > ebx
+		mov isBlocked, 2
+	.elseif isBlocked != 1
+		mov isBlocked, 0
+	.endif
+	
+	;检测阻塞死亡
+	mov ebx, leftFringe
+	.if actor_x < ebx
+		mov isGameOver, 1
 	.endif
 	ret
 
