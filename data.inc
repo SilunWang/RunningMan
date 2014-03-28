@@ -21,6 +21,7 @@ ACTOR_WIDTH equ 80
 ACTOR_RUN_HEIGHT equ 80
 ACTOR_CROUCH_HEIGHT equ 40
 
+
 ;跳跃初始速度
 INITIAL_SPEED equ 16
 ;重力加速度
@@ -30,6 +31,7 @@ GROUND_BASE equ 416
 
 MAPPOINT_LENGTH equ 32
 ELEMENTS_LENGTH equ 18
+NUMBER_LENGTH equ 48
 
 MapPoint STRUCT
 
@@ -54,6 +56,10 @@ MapPoint ends
 	actorSpeed_x SDWORD 6
 	actorSpeed_y SDWORD 0
 	
+	totalScore SDWORD 0
+	firstDigit SDWORD 0
+	secondDigit SDWORD 0
+	thirdDigit SDWORD 0
 	
 	actorState SDWORD 0
 	

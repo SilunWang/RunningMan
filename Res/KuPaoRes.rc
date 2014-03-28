@@ -6,6 +6,16 @@
 #define rainbowCoin			1005
 #define floor				1006
 #define whitebg				1007
+#define number_0			1008
+#define number_1			1009
+#define number_2			1010
+#define number_3			1011
+#define number_4			1012
+#define number_5			1013
+#define number_6			1014
+#define number_7			1015
+#define number_8			1016
+#define number_9			1017
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/xiaoren.ico"
 background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
@@ -14,3 +24,13 @@ silverCoin		ICON      DISCARDABLE "Res/silver_coin.ico"
 rainbowCoin		ICON      DISCARDABLE "Res/rainbow_coin.ico"
 floor			BITMAP    DISCARDABLE "Res/floor.bmp"
 whitebg			BITMAP    DISCARDABLE "Res/whitebg.bmp"
+number_0		ICON      DISCARDABLE "Res/Number_010.ico"
+number_1		ICON      DISCARDABLE "Res/Number_001.ico"
+number_2		ICON      DISCARDABLE "Res/Number_002.ico"
+number_3		ICON      DISCARDABLE "Res/Number_003.ico"
+number_4		ICON      DISCARDABLE "Res/Number_004.ico"
+number_5		ICON      DISCARDABLE "Res/Number_005.ico"
+number_6		ICON      DISCARDABLE "Res/Number_006.ico"
+number_7		ICON      DISCARDABLE "Res/Number_007.ico"
+number_8		ICON      DISCARDABLE "Res/Number_008.ico"
+number_9		ICON      DISCARDABLE "Res/Number_009.ico"

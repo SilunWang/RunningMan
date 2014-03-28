@@ -33,6 +33,16 @@ ICON_GOLDEN_COIN equ 1003
 ICON_SILVER_COIN equ 1004
 ICON_RAINBOW_COIN equ 1005
 BM_FLOOR equ 1006
+ICON_0 equ 1008
+ICON_1 equ 1009
+ICON_2 equ 1010
+ICON_3 equ 1011
+ICON_4 equ 1012
+ICON_5 equ 1013
+ICON_6 equ 1014
+ICON_7 equ 1015
+ICON_8 equ 1016
+ICON_9 equ 1017
 
 ;Ë¢ÐÂ¼ä¸ô
 FREQUENCY equ 15
@@ -49,9 +59,19 @@ TIMERID equ 1
 	hSilverCoin dd ?
 	hRainbowCoin dd ?
 	hFloorBmp dd ?
+	hICON_0 dd ?
+	hICON_1 dd ?
+	hICON_2 dd ?
+	hICON_3 dd ?
+	hICON_4 dd ?
+	hICON_5 dd ?
+	hICON_6 dd ?
+	hICON_7 dd ?
+	hICON_8 dd ?
+	hICON_9 dd ?
 	
-	testStr db "0123456789",0
-   	testStr2 db "9876543210",0
+	testStr db "Stage Clear",0
+   	testStr2 db "Message",0
    	
 WMPaint proto,p1:DWORD,p2:DWORD
 DrawMapPoint proto,p1:DWORD,p2:DWORD

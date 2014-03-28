@@ -4,8 +4,8 @@ option casemap:none
 
 
    
-   include KuPao.inc
-   include data.inc
+include KuPao.inc
+include data.inc
    
 
 
@@ -109,6 +109,7 @@ LOCAL Dc :HDC
 		invoke Repaint,hWnd
 		.if leftFringe > 3000
 			invoke KillTimer,hWnd, TIMERID
+			invoke dw2a, totalScore, OFFSET testStr
 			invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
 		.endif
 	.ELSE
@@ -187,8 +188,76 @@ LOCAL coinEndY: SDWORD
 	mov tmpActorX, eax
 	invoke DrawIconEx,tmpDc,tmpActorX,actor_y,hActor,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,0,0,DI_NORMAL;//绘制小人
 	
+	
+	.if firstDigit == 0
+		invoke DrawIconEx,tmpDc,180,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 1
+		invoke DrawIconEx,tmpDc,180,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 2
+		invoke DrawIconEx,tmpDc,180,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 3
+		invoke DrawIconEx,tmpDc,180,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 4
+		invoke DrawIconEx,tmpDc,180,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 5
+		invoke DrawIconEx,tmpDc,180,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 6
+		invoke DrawIconEx,tmpDc,180,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 7
+		invoke DrawIconEx,tmpDc,180,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 8
+		invoke DrawIconEx,tmpDc,180,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif firstDigit == 9
+		invoke DrawIconEx,tmpDc,180,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.endif
+	
+	.if secondDigit == 0
+		invoke DrawIconEx,tmpDc,120,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 1
+		invoke DrawIconEx,tmpDc,120,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 2
+		invoke DrawIconEx,tmpDc,120,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 3
+		invoke DrawIconEx,tmpDc,120,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 4
+		invoke DrawIconEx,tmpDc,120,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 5
+		invoke DrawIconEx,tmpDc,120,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 6
+		invoke DrawIconEx,tmpDc,120,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 7
+		invoke DrawIconEx,tmpDc,120,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 8
+		invoke DrawIconEx,tmpDc,120,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif secondDigit == 9
+		invoke DrawIconEx,tmpDc,120,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.endif
+	
+	.if thirdDigit == 0
+		invoke DrawIconEx,tmpDc,60,40,hICON_0,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 1
+		invoke DrawIconEx,tmpDc,60,40,hICON_1,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 2
+		invoke DrawIconEx,tmpDc,60,40,hICON_2,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 3
+		invoke DrawIconEx,tmpDc,60,40,hICON_3,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 4
+		invoke DrawIconEx,tmpDc,60,40,hICON_4,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 5
+		invoke DrawIconEx,tmpDc,60,40,hICON_5,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 6
+		invoke DrawIconEx,tmpDc,60,40,hICON_6,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 7
+		invoke DrawIconEx,tmpDc,60,40,hICON_7,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 8
+		invoke DrawIconEx,tmpDc,60,40,hICON_8,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.elseif thirdDigit == 9
+		invoke DrawIconEx,tmpDc,60,40,hICON_9,NUMBER_LENGTH,NUMBER_LENGTH,0,0,DI_NORMAL;//绘制小人
+	.endif
+	
 	;将背景画到前景
 	invoke BitBlt,Dc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,tmpDc,0,0,SRCCOPY ;
+	
 	
 	;释放临时资源	
 	invoke ReleaseDC,hWnd,tmpDc
@@ -278,6 +347,37 @@ LOCAL Dc:DWORD
 	
 	invoke LoadImage,hInstance,ICON_RAINBOW_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
 	mov hRainbowCoin,eax
+	
+	;Numbers
+	invoke LoadImage,hInstance,ICON_0,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_0,eax
+	
+	invoke LoadImage,hInstance,ICON_1,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_1,eax
+	
+	invoke LoadImage,hInstance,ICON_2,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_2,eax
+	
+	invoke LoadImage,hInstance,ICON_3,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_3,eax
+	
+	invoke LoadImage,hInstance,ICON_4,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_4,eax
+	
+	invoke LoadImage,hInstance,ICON_5,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_5,eax
+	
+	invoke LoadImage,hInstance,ICON_6,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_6,eax
+	
+	invoke LoadImage,hInstance,ICON_7,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_7,eax
+	
+	invoke LoadImage,hInstance,ICON_8,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_8,eax
+	
+	invoke LoadImage,hInstance,ICON_9,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
+	mov hICON_9,eax
 	 
 	mov eax ,TRUE 
 	   
@@ -324,6 +424,31 @@ LOCAL R:RECT
 
 Repaint endp
 
+DisplayScore proc
+	pushad
+	
+	mov eax, totalScore
+	cdq
+	
+	mov ebx, 10
+	idiv ebx
+	mov firstDigit, edx
+	cdq
+	mov ebx, 10
+	idiv ebx
+	mov secondDigit, edx
+	cdq
+	mov ebx, 10
+	idiv ebx
+	mov thirdDigit, edx
+	
+	;invoke dw2a, secondDigit, OFFSET testStr
+	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
+	popad
+	ret
+
+DisplayScore endp
+
 UpdateData proc USES eax ebx edx esi edi
 	mov eax, actorSpeed_x
 	add actor_x, eax
@@ -367,15 +492,29 @@ UpdateData proc USES eax ebx edx esi edi
 	imul eax, 4
 	add edi, eax
 	mov ebx, NONE_ELEMENT
+	.if [edi] != ebx
+		mov [edi], ebx
+		add totalScore, GOLDEN_COIN
+	.endif
+	add edi, 4
+	.if [edi] != ebx
+		mov [edi], ebx
+		add totalScore, GOLDEN_COIN
+	.endif
 	mov [edi], ebx
 	add edi, 4
+	.if [edi] != ebx
+		mov [edi], ebx
+		add totalScore, GOLDEN_COIN
+		
+	.endif
 	mov [edi], ebx
-	add edi, 4
-	mov [edi], ebx
-	
+	invoke DisplayScore
 	ret
 
 UpdateData endp
+
+
 
 InitMap proc USES eax ebx ecx esi
 	
@@ -384,9 +523,6 @@ InitMap proc USES eax ebx ecx esi
 	mov eax, 0
 	mov ecx, 60
 L1:
-	;mov (MapPoint PTR [esi]).coinStart, 128
-	;mov (MapPoint PTR [esi]).coinEnd, 256
-	;mov (MapPoint PTR [esi]).coinType,GOLDEN_COIN
 	add esi, ebx
 	;Loop L1
 	ret
