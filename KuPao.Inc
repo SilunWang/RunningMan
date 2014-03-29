@@ -32,6 +32,8 @@ BM_FLOOR equ 1006
 
 ICON_ACTOR equ 1001
 ICON_ACTOR2 equ 1018
+ICON_ACTOR3 equ 1026
+ICON_ACTOR4 equ 1027
 
 
 ICON_GOLDEN_COIN equ 1019
@@ -66,6 +68,8 @@ TIMERID equ 1
 	hBackg dd ?
 	hActor dd ?
 	hActor2 dd ?
+	hActor3 dd ?
+	hActor4 dd ?
 	hGoldenCoin dd ?
 	hSilverCoin dd ?
 	hRainbowCoin dd ?
@@ -89,8 +93,10 @@ TIMERID equ 1
    	testStr2 db "Message",0
    	testStr3 db "1",0
    	
-   	gameOver db "GameOver", 0
-   	gameOverTitle db " ",0
+   	gameSucceed db "mark11111111" ,0
+   	gameOver db "mark11111111", 0
+   	gameSucceedTitle db "Win!",0
+   	gameOverTitle db "GameOver!",0
    	
    	isGameOver dd 0
    	
