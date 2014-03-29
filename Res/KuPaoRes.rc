@@ -1,11 +1,6 @@
-#define background			1000
 #define actor				1001
-#define background1			1002
-#define goldenCoin			1003
-#define silverCoin			1004
-#define rainbowCoin			1005
 #define floor				1006
-#define whitebg				1007
+#define background			1007
 #define number_0			1008
 #define number_1			1009
 #define number_2			1010
@@ -26,15 +21,9 @@
 #define y				1025
 #define actor3				1026
 #define actor4				1027
-background		BITMAP    DISCARDABLE "Res/background.bmp"
-actor			ICON      DISCARDABLE "Res/run1.ico"
-background1		BITMAP    DISCARDABLE "Res/whitebg.bmp"
-goldenCoin		ICON      DISCARDABLE "Res/golden_coin_32X32.ico"
-silverCoin		ICON      DISCARDABLE "Res/silver_coin.ico"
-rainbowCoin		ICON      DISCARDABLE "Res/rainbow_coin.ico"
 floor			BITMAP    DISCARDABLE "Res/floor.bmp"
-whitebg			BITMAP    DISCARDABLE "Res/whitebg.bmp"
-number_0		ICON      DISCARDABLE "Res/Number_010.ico"
+background		BITMAP    DISCARDABLE "Res/background.bmp"
+number_0		ICON      DISCARDABLE "Res/Number_000.ico"
 number_1		ICON      DISCARDABLE "Res/Number_001.ico"
 number_2		ICON      DISCARDABLE "Res/Number_002.ico"
 number_3		ICON      DISCARDABLE "Res/Number_003.ico"
@@ -44,7 +33,10 @@ number_6		ICON      DISCARDABLE "Res/Number_006.ico"
 number_7		ICON      DISCARDABLE "Res/Number_007.ico"
 number_8		ICON      DISCARDABLE "Res/Number_008.ico"
 number_9		ICON      DISCARDABLE "Res/Number_009.ico"
+actor			ICON      DISCARDABLE "Res/run1.ico"
 actor2			ICON      DISCARDABLE "Res/run2.ico"
+actor3			ICON      DISCARDABLE "Res/lie.ico"
+actor4			ICON      DISCARDABLE "Res/jump.ico"
 a			ICON      DISCARDABLE "Res/a.ico"
 b			ICON      DISCARDABLE "Res/b.ico"
 c			ICON      DISCARDABLE "Res/c.ico"
@@ -52,5 +44,3 @@ d			ICON      DISCARDABLE "Res/d.ico"
 e			ICON      DISCARDABLE "Res/e.ico"
 x			ICON      DISCARDABLE "Res/cactus.ico"
 y			ICON      DISCARDABLE "Res/ie.ico"
-actor3			ICON      DISCARDABLE "Res/lie.ico"
-actor4			ICON      DISCARDABLE "Res/jump.ico"

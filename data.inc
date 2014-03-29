@@ -29,13 +29,14 @@ DOWN_OB_WIDTH equ 64
 DOWN_OB_HEIGHT equ 64
 
 
-
 ;跳跃初始速度
 INITIAL_SPEED equ 16
 ;重力加速度
 ACCELERATE_SPEED equ 1
 ;地面基准高度
 GROUND_BASE equ 416
+;X坐标的限制=2560*32-2*1024
+TotalXLimit equ 79872
 
 MAPPOINT_LENGTH equ 32
 ELEMENTS_LENGTH equ 18
@@ -53,7 +54,6 @@ MapSize equ 2560
 
 MapNum equ 20
 
-
 .data
 	
 	actor_x SDWORD 200
@@ -69,6 +69,8 @@ MapNum equ 20
 	firstDigit SDWORD 0
 	secondDigit SDWORD 0
 	thirdDigit SDWORD 0
+	fourthDigit SDWORD 0
+	fifthDigit SDWORD 0
 	
 	actorState SDWORD 0
 	actorImage SDWORD 0
@@ -76,17 +78,21 @@ MapNum equ 20
 	
 	;小人被阻塞
 	isBlocked DWORD 0
-	
+	;左边界
 	leftFringe SDWORD 32
+	;游戏状态
+	gameSucceed db "mark:000000" ,0
+   	gameOver db "mark:000000", 0
+   	gameSucceedTitle db "Win!",0
+   	gameOverTitle db "GameOver!",0
+   	isGameOver dd 0
 	
 	;Map information
-	Map1 db "Map1.txt",0
-	Map2 db "Map2.txt",0
-	Map3 db "Map3.txt",0
-	Map4 db "Map4.txt",0
-	Map5 db "Map5.txt",0
-	Map6 db "Map6.txt",0
-	
+	Map1 db "SubMap1.txt",0
+	Map2 db "SubMap2.txt",0
+	Map3 db "SubMap3.txt",0
+	Map4 db "SubMap4.txt",0
+	Map5 db "SubMap5.txt",0
    	
    	MapBuffer db MapBufferSize DUP(?)
    	MapFlag db MapSize DUP(?)
@@ -97,7 +103,6 @@ MapNum equ 20
 	gMap3 MapPoint 128 DUP(<>)
 	gMap4 MapPoint 128 DUP(<>)
 	gMap5 MapPoint 128 DUP(<>)
-	gMap6 MapPoint 128 DUP(<>)
 	
-	firstStage DWORD 1, 2, 3, 4, 5, 6, 4, 5, 1, 3, 5, 2, 6, 1, 4, 6, 3, 1, 4, 5
+	firstStage DWORD 1, 2, 3, 4, 5, 3, 1, 2, 3, 2, 5, 1, 2, 4, 4, 5, 4, 3, 5, 1
 	

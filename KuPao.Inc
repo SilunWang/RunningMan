@@ -26,9 +26,8 @@ STEADY_X equ 200
 ;±³¾°Í¼Æ¬µÄ¿í¶È
 BACKG_WIDTH equ 1024
 
-BM_BACKGROUND equ 1000
-BM_BACKGROUND1 equ 1002
 BM_FLOOR equ 1006
+BM_BACKGROUND equ 1007
 
 ICON_ACTOR equ 1001
 ICON_ACTOR2 equ 1018
@@ -91,16 +90,10 @@ TIMERID equ 1
 	
 	testStr db "Stage Clear",0
    	testStr2 db "Message",0
-   	testStr3 db "1",0
-   	
-   	gameSucceed db "mark11111111" ,0
-   	gameOver db "mark11111111", 0
-   	gameSucceedTitle db "Win!",0
-   	gameOverTitle db "GameOver!",0
-   	
-   	isGameOver dd 0
-   	
+   	testStr3 db "0",0
+   	   	
 WMPaint proto,p1:DWORD,p2:DWORD
+DrawNumber proto,p1:DWORD,p2:DWORD,p3:DWORD
 DrawMapPoint proto,p1:DWORD,p2:DWORD
 
 LoadRes proto:HWND
@@ -116,4 +109,4 @@ ConvertMap proto: PTR DWORD
 CopyMap proto, p1:DWORD, p2:DWORD, p3:DWORD
 CreateGlobalMap proto
 
-
+replay proto
