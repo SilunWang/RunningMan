@@ -55,6 +55,13 @@ ICON_7 equ 1015
 ICON_8 equ 1016
 ICON_9 equ 1017
 
+FIGURE_1 equ 1050
+FIGURE_2 equ 1051
+FIGURE_3 equ 1052
+FIGURE_4 equ 1053
+
+ICON_ARROW equ 1055
+
 ;Ë¢ÐÂ¼ä¸ô
 FREQUENCY equ 5
 
@@ -69,6 +76,7 @@ TIMERID equ 1
 	hActor2 dd ?
 	hActor3 dd ?
 	hActor4 dd ?
+	
 	hGoldenCoin dd ?
 	hSilverCoin dd ?
 	hRainbowCoin dd ?
@@ -77,6 +85,7 @@ TIMERID equ 1
 	hUpObstacle dd ?
 	hDownObstacle dd ?
 	hFloorBmp dd ?
+	
 	hICON_0 dd ?
 	hICON_1 dd ?
 	hICON_2 dd ?
@@ -87,6 +96,13 @@ TIMERID equ 1
 	hICON_7 dd ?
 	hICON_8 dd ?
 	hICON_9 dd ?
+	
+	hArrow dd ?
+	
+	hFIGURE_1 dd ?
+	hFIGURE_2 dd ?
+	hFIGURE_3 dd ?
+	hFIGURE_4 dd ?
 	
 	testStr db "Stage Clear",0
    	testStr2 db "Message",0

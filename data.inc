@@ -22,6 +22,13 @@ ACTOR_RUN_HEIGHT equ 96
 ACTOR_LIE_HEIGHT equ 64
 ACTOR_JUMP_SIZE equ 112
 
+FIGURE_WIDTH equ 128
+FIGURE_HEIGHT equ 128
+FIGURE_Y equ 150
+FIGURE_X equ 100
+
+ARROW_SIZE equ 128
+
 
 UP_OB_WIDTH equ 64
 UP_OB_HEIGHT equ 96
@@ -83,9 +90,14 @@ MapNum equ 20
 	;ÓÎÏ·×´Ì¬
 	gameSucceed db "mark:000000" ,0
    	gameOver db "mark:000000", 0
-   	gameSucceedTitle db "Win!",0
-   	gameOverTitle db "GameOver!",0
+   	gameSucceedTitle db "You Win!",0
+   	gameOverTitle db "Game Over!",0
    	isGameOver dd 0
+   	
+   	figureNum dd 4
+   	startGame dd 0
+   	stateChanged dd 0
+   	figureChosen dd 1
 	
 	;Map information
 	Map1 db "SubMap1.txt",0
