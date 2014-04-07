@@ -15,6 +15,7 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 .data
    ClassName db "MainWinClass",0
    AppName  db "Main Window",0
+   ghwnd dd ?
 
 .data?
    hInstance HINSTANCE ?
@@ -64,7 +65,7 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
            WS_OVERLAPPEDWINDOW,WINDOW_X,\
            WINDOW_Y,WINDOW_WIDTH,WINDOW_HEIGHT,NULL,NULL,\
            hInst,NULL
-	mov   hwnd,eax
+	mov hwnd,eax
 	
 	invoke ShowWindow, hwnd,SW_SHOWNORMAL
 	invoke UpdateWindow, hwnd
@@ -92,6 +93,8 @@ LOCAL Dc :HDC
 		invoke PostQuitMessage,NULL
 	.ELSEIF uMsg==WM_CREATE
 		invoke LoadResWelcome,hWnd
+		mov eax, hWnd
+		mov ghwnd, eax
 		invoke UpdateData
 		mov eax, base_y
 		mov actor_y, eax	
@@ -125,7 +128,7 @@ LOCAL Dc :HDC
 			invoke dw2a, totalScore, OFFSET gameOver
 			invoke MessageBox,hWnd,OFFSET gameOver, OFFSET gameOverTitle,0
 			invoke replay
-			invoke SetTimer, hWnd, TIMERID,FREQUENCY,NULL
+			;invoke SetTimer, hWnd, TIMERID,FREQUENCY,NULL
 		.endif
 	.ELSE
 		invoke DefWindowProc,hWnd,uMsg,wParam,lParam		
@@ -252,7 +255,11 @@ replay Proc
 	
 	mov leftFringe,32
 	
+	mov startGame, 0
+	
 	invoke CreateGlobalMap
+	
+	invoke Repaint,ghwnd
 	
 	ret
 
