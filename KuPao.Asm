@@ -66,7 +66,7 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
            WINDOW_Y,WINDOW_WIDTH,WINDOW_HEIGHT,NULL,NULL,\
            hInst,NULL
 	mov hwnd,eax
-	
+	mov ghwnd, eax
 	invoke ShowWindow, hwnd,SW_SHOWNORMAL
 	invoke UpdateWindow, hwnd
 	
@@ -93,11 +93,7 @@ LOCAL Dc :HDC
 		invoke PostQuitMessage,NULL
 	.ELSEIF uMsg==WM_CREATE
 		invoke LoadResWelcome,hWnd
-		mov eax, hWnd
-		mov ghwnd, eax
-		invoke UpdateData
-		mov eax, base_y
-		mov actor_y, eax	
+		invoke replay	
 	.ELSEIF uMsg==WM_KEYDOWN
 		invoke KeyDownCallBack,wParam, hWnd
 		;ÉÐÎ´¿ªÊ¼
@@ -259,7 +255,11 @@ replay Proc
 	mov hActor, NULL_HANDLER
 	mov hActor2, NULL_HANDLER
 	mov hActor3, NULL_HANDLER
-	mov hActor4, NULL_HANDLER	
+	mov hActor4, NULL_HANDLER
+	
+	invoke UpdateData
+	mov eax, base_y
+	mov actor_y, eax	
 	
 	invoke CreateGlobalMap
 	
