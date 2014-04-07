@@ -34,6 +34,16 @@ ICON_ACTOR2 equ 1018
 ICON_ACTOR3 equ 1026
 ICON_ACTOR4 equ 1027
 
+ICON_ACTOR2_RUN1 equ 1061
+ICON_ACTOR2_RUN2 equ 1062
+ICON_ACTOR2_JUMP equ 1063
+ICON_ACTOR2_LIE equ 1064
+
+ICON_ACTOR3_RUN1 equ 1071
+ICON_ACTOR3_RUN2 equ 1072
+ICON_ACTOR3_JUMP equ 1073
+ICON_ACTOR3_LIE equ 1074
+
 
 ICON_GOLDEN_COIN equ 1019
 ICON_SILVER_COIN equ 1020
@@ -112,10 +122,16 @@ WMPaint proto,p1:DWORD,p2:DWORD
 DrawNumber proto,p1:DWORD,p2:DWORD,p3:DWORD
 DrawMapPoint proto,p1:DWORD,p2:DWORD
 
+LoadResWelcome proto:HWND
+ChooseFigure proto,Dc:DWORD, hWnd:DWORD
+ArrowLeft proto
+ArrowRight proto
+pressEnter proto:DWORD
+
 LoadRes proto:HWND
 InitMap proto
 
-KeyDownCallBack proto:DWORD
+KeyDownCallBack proto,p1:DWORD,p2:DWORD
 ActorMove proto:DWORD
 Repaint proto:HWND
 UpdateData proto

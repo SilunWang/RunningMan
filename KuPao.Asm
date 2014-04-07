@@ -83,91 +83,6 @@ WinMain proc hInst:HINSTANCE,hPrevInst:HINSTANCE,CmdLine:LPSTR,CmdShow:DWORD
 	ret
 WinMain endp
 
-ChooseFigure Proc,
-	Dc:DWORD, hWnd:DWORD
-	LOCAL XP:DWORD
-	LOCAL BIGSIZE:DWORD
-	
-	pushad
-	mov eax, FIGURE_WIDTH
-	mov ebx, 2
-	mul ebx
-	mov BIGSIZE, eax
-	mov ebx, 1
-	mov edx, FIGURE_X
-	mov XP, edx
-	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
-	.ELSE
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人	
-	.endif
-	mov edx, XP
-	add edx, FIGURE_X
-	add edx, FIGURE_WIDTH
-	mov ebx, 2
-	mov XP, edx
-	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
-	.ELSE
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人
-	.endif
-	mov edx, XP
-	add edx, FIGURE_X
-	add edx, FIGURE_WIDTH
-	mov ebx, 3
-	mov XP, edx
-	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
-	.ELSE
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人
-	.endif
-	mov edx, XP
-	add edx, FIGURE_X
-	add edx, FIGURE_WIDTH
-	mov XP, edx
-	mov ebx, 4
-	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
-	.ELSE
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人	
-	.endif
-	;invoke DrawIconEx,Dc,FIGURE_X,FIGURE_Y,hFIGURE_1,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人
-	
-	
-	
-	
-	mov eax, figureChosen
-	dec eax
-	mov ebx, FIGURE_WIDTH + FIGURE_X
-	mul ebx
-	mov XP, eax
-	add XP, FIGURE_X
-	invoke DrawIconEx,Dc,XP,FIGURE_Y+FIGURE_WIDTH,hArrow,ARROW_SIZE,ARROW_SIZE,0,0,DI_NORMAL
-	
-	popad
-	ret
-
-ChooseFigure endp
-
-ArrowLeft Proc
-	pushad
-	.IF figureChosen > 1
-		dec figureChosen
-	.ENDIF
-	popad
-	ret
-ArrowLeft endp
-
-ArrowRight Proc
-	pushad
-	mov ebx, figureNum
-	.IF figureChosen < ebx
-		inc figureChosen
-	.ENDIF
-	popad
-	ret
-ArrowRight endp
-
 
 WndProc proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 LOCAL ps :PAINTSTRUCT
@@ -176,16 +91,12 @@ LOCAL Dc :HDC
 	.IF uMsg==WM_DESTROY
 		invoke PostQuitMessage,NULL
 	.ELSEIF uMsg==WM_CREATE
-		invoke LoadRes,hWnd
-		invoke CreateGlobalMap
+		invoke LoadResWelcome,hWnd
 		invoke UpdateData
 		mov eax, base_y
-		mov actor_y, eax
+		mov actor_y, eax	
 	.ELSEIF uMsg==WM_KEYDOWN
-		invoke KeyDownCallBack,wParam
-		.if stateChanged == 1
-			invoke SetTimer, hWnd, TIMERID,FREQUENCY,NULL
-		.endif
+		invoke KeyDownCallBack,wParam, hWnd
 		;尚未开始
 	   	.if startGame == 0
 	   		invoke Repaint,hWnd
@@ -224,6 +135,93 @@ LOCAL Dc :HDC
 	xor eax,eax
 	ret
 WndProc endp
+
+ChooseFigure Proc,
+	Dc:DWORD, hWnd:DWORD
+	LOCAL XP:DWORD
+	LOCAL BIGSIZE:DWORD
+	
+	pushad
+	mov eax, FIGURE_SMALL_WIDTH
+	mov ebx, 2
+	mul ebx
+	mov BIGSIZE, eax
+	mov ebx, 1
+	mov edx, FIGURE_X
+	mov XP, edx
+	.IF ebx == figureChosen
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
+	.ELSE
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人	
+	.endif
+	mov edx, XP
+	add edx, FIGURE_X
+	add edx, FIGURE_SMALL_WIDTH
+	mov ebx, 2
+	mov XP, edx
+	.IF ebx == figureChosen
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
+	.ELSE
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人
+	.endif
+	mov edx, XP
+	add edx, FIGURE_X
+	add edx, FIGURE_SMALL_WIDTH
+	mov ebx, 3
+	mov XP, edx
+	.IF ebx == figureChosen
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
+	.ELSE
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人
+	.endif
+	mov edx, XP
+	add edx, FIGURE_X
+	add edx, FIGURE_SMALL_WIDTH
+	mov XP, edx
+	mov ebx, 4
+	.IF ebx == figureChosen
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
+	.ELSE
+		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人	
+	.endif
+	;invoke DrawIconEx,Dc,FIGURE_X,FIGURE_Y,hFIGURE_1,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人
+	
+	mov eax, figureChosen
+	dec eax
+	mov ebx, FIGURE_SMALL_WIDTH + FIGURE_X
+	mul ebx
+	mov XP, eax
+	add XP, FIGURE_X
+	invoke DrawIconEx,Dc,XP,FIGURE_Y+FIGURE_SMALL_WIDTH,hArrow,ARROW_SIZE,ARROW_SIZE,0,0,DI_NORMAL
+	
+	popad
+	ret
+
+ChooseFigure endp
+
+LoadResWelcome proc USES eax ebx esi edi,
+	hWnd:HWND
+LOCAL Dc:DWORD	
+	
+	;选择箭头
+	invoke LoadImage,hInstance,ICON_ARROW,IMAGE_ICON,ARROW_SIZE,ARROW_SIZE,LR_DEFAULTCOLOR
+	mov hArrow,eax
+	
+	;角色选择
+	invoke LoadImage,hInstance,FIGURE_1,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
+	mov hFIGURE_1,eax
+	invoke LoadImage,hInstance,FIGURE_2,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
+	mov hFIGURE_2,eax
+	invoke LoadImage,hInstance,FIGURE_3,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
+	mov hFIGURE_3,eax
+	invoke LoadImage,hInstance,FIGURE_4,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
+	mov hFIGURE_4,eax	
+	
+	mov eax ,TRUE 
+	   
+	ret
+
+LoadResWelcome endp
 
 replay Proc
 	
@@ -510,28 +508,35 @@ LOCAL Dc:DWORD
 	invoke SelectObject,FloorDc,hFloorBmp ;//将一个Dc和bitmap hd与资源绑定起来
 	
 	;小人
-	invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hActor,eax
-	invoke LoadImage,hInstance,ICON_ACTOR2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
-	mov hActor2,eax
-	invoke LoadImage,hInstance,ICON_ACTOR3,IMAGE_ICON,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,LR_DEFAULTCOLOR
-	mov hActor3,eax
-	invoke LoadImage,hInstance,ICON_ACTOR4,IMAGE_ICON,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,LR_DEFAULTCOLOR
-	mov hActor4,eax
+	.if figureChosen == 1
+		invoke LoadImage,hInstance,ICON_ACTOR,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor,eax
+		invoke LoadImage,hInstance,ICON_ACTOR2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor2,eax
+		invoke LoadImage,hInstance,ICON_ACTOR3,IMAGE_ICON,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor3,eax
+		invoke LoadImage,hInstance,ICON_ACTOR4,IMAGE_ICON,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,LR_DEFAULTCOLOR
+		mov hActor4,eax
+	.elseif figureChosen == 2
+		invoke LoadImage,hInstance,ICON_ACTOR2_RUN1,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor,eax
+		invoke LoadImage,hInstance,ICON_ACTOR2_RUN2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor2,eax
+		invoke LoadImage,hInstance,ICON_ACTOR2_LIE,IMAGE_ICON,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor3,eax
+		invoke LoadImage,hInstance,ICON_ACTOR2_JUMP,IMAGE_ICON,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,LR_DEFAULTCOLOR
+		mov hActor4,eax
+	.elseif figureChosen == 3
+		invoke LoadImage,hInstance,ICON_ACTOR3_RUN1,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor,eax
+		invoke LoadImage,hInstance,ICON_ACTOR3_RUN2,IMAGE_ICON,ACTOR_WIDTH,ACTOR_RUN_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor2,eax
+		invoke LoadImage,hInstance,ICON_ACTOR3_LIE,IMAGE_ICON,ACTOR_WIDTH,ACTOR_LIE_HEIGHT,LR_DEFAULTCOLOR
+		mov hActor3,eax
+		invoke LoadImage,hInstance,ICON_ACTOR3_JUMP,IMAGE_ICON,ACTOR_JUMP_SIZE,ACTOR_JUMP_SIZE,LR_DEFAULTCOLOR
+		mov hActor4,eax
+	.endif
 	
-	;选择箭头
-	invoke LoadImage,hInstance,ICON_ARROW,IMAGE_ICON,ARROW_SIZE,ARROW_SIZE,LR_DEFAULTCOLOR
-	mov hArrow,eax
-	
-	;角色选择
-	invoke LoadImage,hInstance,FIGURE_1,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
-	mov hFIGURE_1,eax
-	invoke LoadImage,hInstance,FIGURE_2,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
-	mov hFIGURE_2,eax
-	invoke LoadImage,hInstance,FIGURE_3,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
-	mov hFIGURE_3,eax
-	invoke LoadImage,hInstance,FIGURE_4,IMAGE_ICON,FIGURE_WIDTH,FIGURE_HEIGHT,LR_DEFAULTCOLOR
-	mov hFIGURE_4,eax
 	
 	;币和饼干
 	invoke LoadImage,hInstance,ICON_GOLDEN_COIN,IMAGE_ICON,MAPPOINT_LENGTH,MAPPOINT_LENGTH,LR_DEFAULTCOLOR
@@ -593,18 +598,11 @@ LOCAL Dc:DWORD
 
 LoadRes endp
 
-pressEnter proc
 
-	pushad
-	mov startGame, 1
-	mov stateChanged, 1
-	popad
-	ret
-
-pressEnter endp
 
 KeyDownCallBack proc,
-	wParam:DWORD
+	wParam:DWORD,
+	hWnd:DWORD
 	mov eax,wParam
 	.if eax == VK_UP
 		invoke ActorMove,VK_UP
@@ -615,7 +613,7 @@ KeyDownCallBack proc,
 	.elseif eax == VK_RIGHT && startGame == 0
 		invoke ArrowRight
 	.elseif eax == VK_RETURN && startGame == 0
-		invoke pressEnter
+		invoke pressEnter,hWnd
 	.endif
 	ret
 KeyDownCallBack endp
@@ -639,6 +637,40 @@ ActorMove proc vKey :DWORD
 	ret
 
 ActorMove endp
+
+ArrowLeft Proc
+	pushad
+	.IF figureChosen > 1
+		dec figureChosen
+	.ENDIF
+	popad
+	ret
+ArrowLeft endp
+
+ArrowRight Proc
+	pushad
+	mov ebx, figureNum
+	.IF figureChosen < ebx
+		inc figureChosen
+	.ENDIF
+	popad
+	ret
+ArrowRight endp
+
+
+pressEnter proc,
+	hWnd:DWORD
+
+	pushad
+	mov startGame, 1
+	invoke LoadRes,hWnd
+	invoke CreateGlobalMap
+	invoke SetTimer, hWnd, TIMERID,FREQUENCY,NULL
+	popad
+	ret
+
+pressEnter endp
+
 
 Repaint proc hWnd:HWND
 LOCAL R:RECT

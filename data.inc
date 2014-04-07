@@ -22,8 +22,10 @@ ACTOR_RUN_HEIGHT equ 96
 ACTOR_LIE_HEIGHT equ 64
 ACTOR_JUMP_SIZE equ 112
 
-FIGURE_WIDTH equ 128
-FIGURE_HEIGHT equ 128
+FIGURE_WIDTH equ 256
+FIGURE_HEIGHT equ 256
+FIGURE_SMALL_WIDTH equ 128
+FIGURE_SMALL_HEIGHT equ 128
 FIGURE_Y equ 150
 FIGURE_X equ 100
 
@@ -97,6 +99,7 @@ MapNum equ 20
    	figureNum dd 4
    	startGame dd 0
    	stateChanged dd 0
+   	;被选中的人物
    	figureChosen dd 1
 	
 	;Map information

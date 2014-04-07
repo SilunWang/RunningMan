@@ -26,6 +26,14 @@
 #define figure3				1052
 #define figure4				1053
 #define arrow				1055
+#define actor2_run1			1061
+#define actor2_run2			1062
+#define actor2_jump			1063
+#define actor2_lie			1064
+#define actor3_run1			1071
+#define actor3_run2			1072
+#define actor3_jump			1073
+#define actor3_lie			1074
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/run1.ico"
 floor			BITMAP    DISCARDABLE "Res/floor.bmp"
@@ -39,7 +47,7 @@ number_6		ICON      DISCARDABLE "Res/Number_006.ico"
 number_7		ICON      DISCARDABLE "Res/Number_007.ico"
 number_8		ICON      DISCARDABLE "Res/Number_008.ico"
 number_9		ICON      DISCARDABLE "Res/Number_009.ico"
-actor2			ICON      DISCARDABLE "Res/run2.ico"
+actor2			ICON      DISCARDABLE "Res/actors/actor2.ico"
 a			ICON      DISCARDABLE "Res/a.ico"
 b			ICON      DISCARDABLE "Res/b.ico"
 c			ICON      DISCARDABLE "Res/c.ico"
@@ -50,7 +58,15 @@ y			ICON      DISCARDABLE "Res/ie.ico"
 actor3			ICON      DISCARDABLE "Res/lie.ico"
 actor4			ICON      DISCARDABLE "Res/jump.ico"
 figure1			ICON      DISCARDABLE "Res/unused/figure1.ico"
-figure2			ICON      DISCARDABLE "Res/unused/figure2.ico"
+figure2			ICON      DISCARDABLE "Res/actors/actor2.ico"
 figure3			ICON      DISCARDABLE "Res/unused/figure3.ico"
 figure4			ICON      DISCARDABLE "Res/unused/figure4.ico"
 arrow			ICON      DISCARDABLE "Res/arrow.ico"
+actor2_run1		ICON      DISCARDABLE "Res/actors/run2_1.ico"
+actor2_run2		ICON      DISCARDABLE "Res/actors/run2_2.ico"
+actor2_jump		ICON      DISCARDABLE "Res/actors/jump2.ico"
+actor2_lie		ICON      DISCARDABLE "Res/actors/lie2.ico"
+actor3_run1		ICON      DISCARDABLE "Res/actors/run3_1.ico"
+actor3_run2		ICON      DISCARDABLE "Res/actors/run3_2.ico"
+actor3_jump		ICON      DISCARDABLE "Res/actors/jump3.ico"
+actor3_lie		ICON      DISCARDABLE "Res/actors/lie3.ico"
