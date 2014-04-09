@@ -34,6 +34,7 @@
 #define actor3_run2			1072
 #define actor3_jump			1073
 #define actor3_lie			1074
+#define index_bg			1080
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/run1.ico"
 floor			BITMAP    DISCARDABLE "Res/floor.bmp"
@@ -57,10 +58,10 @@ x			ICON      DISCARDABLE "Res/cactus.ico"
 y			ICON      DISCARDABLE "Res/ie.ico"
 actor3			ICON      DISCARDABLE "Res/lie.ico"
 actor4			ICON      DISCARDABLE "Res/jump.ico"
-figure1			ICON      DISCARDABLE "Res/unused/figure1.ico"
+figure1			ICON      DISCARDABLE "Res/actors/actor1.ico"
 figure2			ICON      DISCARDABLE "Res/actors/actor2.ico"
-figure3			ICON      DISCARDABLE "Res/unused/figure3.ico"
-figure4			ICON      DISCARDABLE "Res/unused/figure4.ico"
+figure3			ICON      DISCARDABLE "Res/actors/actor3.ico"
+figure4			ICON      DISCARDABLE "Res/actors/actor4.ico"
 arrow			ICON      DISCARDABLE "Res/arrow.ico"
 actor2_run1		ICON      DISCARDABLE "Res/actors/run2_1.ico"
 actor2_run2		ICON      DISCARDABLE "Res/actors/run2_2.ico"
@@ -70,3 +71,4 @@ actor3_run1		ICON      DISCARDABLE "Res/actors/run3_1.ico"
 actor3_run2		ICON      DISCARDABLE "Res/actors/run3_2.ico"
 actor3_jump		ICON      DISCARDABLE "Res/actors/jump3.ico"
 actor3_lie		ICON      DISCARDABLE "Res/actors/lie3.ico"
+index_bg		ICON      DISCARDABLE "Res/indexbg.ico"
