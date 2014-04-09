@@ -70,6 +70,8 @@ FIGURE_2 equ 1051
 FIGURE_3 equ 1052
 FIGURE_4 equ 1053
 
+ICON_INDEXBG equ 1080
+
 ICON_ARROW equ 1055
 
 NULL_HANDLER equ 15555
@@ -108,6 +110,8 @@ TIMERID equ 1
 	hICON_7 dd ?
 	hICON_8 dd ?
 	hICON_9 dd ?
+	
+	hIndexbg dd ?
 	
 	hArrow dd ?
 	

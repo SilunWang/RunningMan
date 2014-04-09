@@ -141,6 +141,9 @@ ChooseFigure Proc,
 	LOCAL BIGSIZE:DWORD
 	
 	pushad
+	
+	invoke DrawIconEx,Dc,0,0,hIndexbg,INDEXBG_WIDTH,INDEXBG_HEIGHT,0,0,DI_NORMAL
+	
 	mov eax, FIGURE_SMALL_WIDTH
 	mov ebx, 2
 	mul ebx
@@ -191,7 +194,7 @@ ChooseFigure Proc,
 	mul ebx
 	mov XP, eax
 	add XP, FIGURE_X
-	invoke DrawIconEx,Dc,XP,FIGURE_Y+FIGURE_SMALL_WIDTH,hArrow,ARROW_SIZE,ARROW_SIZE,0,0,DI_NORMAL
+	invoke DrawIconEx,Dc,XP,FIGURE_Y+FIGURE_SMALL_WIDTH+FIGURE_SMALL_WIDTH-30,hArrow,ARROW_SIZE,ARROW_SIZE,0,0,DI_NORMAL
 	
 	popad
 	ret
@@ -201,6 +204,10 @@ ChooseFigure endp
 LoadResWelcome proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD	
+
+	;选择箭头
+	invoke LoadImage,hInstance,ICON_INDEXBG,IMAGE_ICON,INDEXBG_WIDTH,INDEXBG_HEIGHT,LR_DEFAULTCOLOR
+	mov hIndexbg,eax
 	
 	;选择箭头
 	invoke LoadImage,hInstance,ICON_ARROW,IMAGE_ICON,ARROW_SIZE,ARROW_SIZE,LR_DEFAULTCOLOR

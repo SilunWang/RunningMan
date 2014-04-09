@@ -74,10 +74,10 @@ AutoLoad=1,2,3
 21=y,1025,2,Res\ie.ico
 22=actor3,1026,2,Res\lie.ico
 23=actor4,1027,2,Res\jump.ico
-24=figure1,1050,2,Res\unused\figure1.ico
+24=figure1,1050,2,Res\actors\actor1.ico
 25=figure2,1051,2,Res\actors\actor2.ico
-26=figure3,1052,2,Res\unused\figure3.ico
-27=figure4,1053,2,Res\unused\figure4.ico
+26=figure3,1052,2,Res\actors\actor3.ico
+27=figure4,1053,2,Res\actors\actor4.ico
 28=arrow,1055,2,Res\arrow.ico
 29=actor2_run1,1061,2,Res\actors\run2_1.ico
 30=actor2_run2,1062,2,Res\actors\run2_2.ico
@@ -87,6 +87,7 @@ AutoLoad=1,2,3
 34=actor3_run2,1072,2,Res\actors\run3_2.ico
 35=actor3_jump,1073,2,Res\actors\jump3.ico
 36=actor3_lie,1074,2,Res\actors\lie3.ico
+37=index_bg,1080,2,Res\indexbg.ico
 [Collapse]
 3=
 2=
@@ -96,8 +97,8 @@ AutoLoad=1,2,3
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
-2=0,0,1054,410,836
-1=0,0,1054,410,13766
+2=0,0,1054,410,1295
+1=0,0,1054,410,4708
 =======
 2=0,0,1054,410,1517
 1=0,0,1054,410,2976
@@ -121,7 +122,7 @@ MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
 <<<<<<< Updated upstream
-MilestoneOnDateDate=7
+MilestoneOnDateDate=9
 =======
 MilestoneOnDateDate=29
 >>>>>>> Stashed changes
