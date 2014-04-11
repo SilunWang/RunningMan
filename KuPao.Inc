@@ -70,7 +70,7 @@ FIGURE_2 equ 1051
 FIGURE_3 equ 1052
 FIGURE_4 equ 1053
 
-ICON_INDEXBG equ 1080
+BM_INDEX_BACKGROUND equ 1080
 
 ICON_ARROW equ 1055
 
@@ -83,6 +83,7 @@ TIMERID equ 1
 
 .data
 	BackgroundDc  dd ?
+	IndexBackgroundDc dd ?
 	FloorDc dd ?
 	
 	hBackg dd ?

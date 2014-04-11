@@ -141,8 +141,7 @@ ChooseFigure Proc,
 	LOCAL BIGSIZE:DWORD
 	
 	pushad
-	
-	invoke DrawIconEx,Dc,0,0,hIndexbg,INDEXBG_WIDTH,INDEXBG_HEIGHT,0,0,DI_NORMAL
+	invoke BitBlt,Dc,0,0,1012,545,IndexBackgroundDc,0,0,SRCCOPY ;//绘制背景图片1
 	
 	mov eax, FIGURE_SMALL_WIDTH
 	mov ebx, 2
@@ -151,8 +150,9 @@ ChooseFigure Proc,
 	mov ebx, 1
 	mov edx, FIGURE_X
 	mov XP, edx
+	sub edx, 64
 	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
+		invoke DrawIconEx,Dc,edx,FIGURE_Y,hFIGURE_1,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
 	.ELSE
 		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_1,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人	
 	.endif
@@ -161,8 +161,9 @@ ChooseFigure Proc,
 	add edx, FIGURE_SMALL_WIDTH
 	mov ebx, 2
 	mov XP, edx
+	sub edx, 64
 	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,Dc,edx,FIGURE_Y,hFIGURE_2,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
 	.ELSE
 		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_2,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人
 	.endif
@@ -171,8 +172,9 @@ ChooseFigure Proc,
 	add edx, FIGURE_SMALL_WIDTH
 	mov ebx, 3
 	mov XP, edx
+	sub edx, 64
 	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
+		invoke DrawIconEx,Dc,edx,FIGURE_Y,hFIGURE_3,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人
 	.ELSE
 		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_3,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人
 	.endif
@@ -181,12 +183,12 @@ ChooseFigure Proc,
 	add edx, FIGURE_SMALL_WIDTH
 	mov XP, edx
 	mov ebx, 4
+	sub edx, 64
 	.IF ebx == figureChosen
-		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
+		invoke DrawIconEx,Dc,edx,FIGURE_Y,hFIGURE_4,BIGSIZE,BIGSIZE,0,0,DI_NORMAL;//绘制小人	
 	.ELSE
 		invoke DrawIconEx,Dc,XP,FIGURE_Y,hFIGURE_4,FIGURE_SMALL_WIDTH,FIGURE_SMALL_HEIGHT,0,0,DI_NORMAL;//绘制小人	
 	.endif
-	;invoke DrawIconEx,Dc,FIGURE_X,FIGURE_Y,hFIGURE_1,FIGURE_WIDTH,FIGURE_HEIGHT,0,0,DI_NORMAL;//绘制小人
 	
 	mov eax, figureChosen
 	dec eax
@@ -205,9 +207,12 @@ LoadResWelcome proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD	
 
-	;选择箭头
-	invoke LoadImage,hInstance,ICON_INDEXBG,IMAGE_ICON,INDEXBG_WIDTH,INDEXBG_HEIGHT,LR_DEFAULTCOLOR
+	;选择背景
+	invoke CreateCompatibleDC,Dc
+	mov IndexBackgroundDc,eax
+	invoke LoadBitmap,hInstance,BM_INDEX_BACKGROUND
 	mov hIndexbg,eax
+	invoke SelectObject,IndexBackgroundDc,hIndexbg ;//将一个Dc和bitmap hd与资源绑定起来
 	
 	;选择箭头
 	invoke LoadImage,hInstance,ICON_ARROW,IMAGE_ICON,ARROW_SIZE,ARROW_SIZE,LR_DEFAULTCOLOR
@@ -493,7 +498,7 @@ LOCAL pointOffset:DWORD
 		add edi, SIZEOF DWORD
 		inc ebx
 	.endw
-	
+	;绘制地面
 	mov ebx, (MapPoint PTR [esi]).ground_y
 	.while ebx <= WINDOW_HEIGHT
 		invoke BitBlt,tmpDc,pointX,ebx,32,32,FloorDc,0,0,SRCCOPY ;//绘制
