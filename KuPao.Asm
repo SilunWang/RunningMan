@@ -207,6 +207,8 @@ LoadResWelcome proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD	
 
+	invoke GetDC,hWnd
+	mov Dc,eax
 	;Ñ¡Ôñ±³¾°
 	invoke CreateCompatibleDC,Dc
 	mov IndexBackgroundDc,eax

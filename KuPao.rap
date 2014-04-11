@@ -45,7 +45,7 @@ Group=Assembly,Resources,Misc
 3=3
 4=4
 [AutoLoad]
-AutoLoad=3,2,1
+AutoLoad=
 [RADebugBP]
 1=
 2=
@@ -70,7 +70,7 @@ AutoLoad=3,2,1
 17=c,1021,2,Res\c.ico
 18=d,1022,2,Res\d.ico
 19=e,1023,2,Res\e.ico
-20=x,1024,2,Res\www.ico.la_4c5843ea069f20637f7f2cd915258020_96X96.ico
+20=x,1024,2,Res\cactus1.ico
 21=y,1025,2,Res\ie.ico
 22=actor3,1026,2,Res\actors\lie1.ico
 23=actor4,1027,2,Res\actors\jump1.ico
@@ -98,8 +98,8 @@ AutoLoad=3,2,1
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
-2=0,0,1054,410,1324
-1=0,0,1054,410,3028
+2=0,0,1054,410,2526
+1=0,0,1054,410,23698
 =======
 2=0,0,1054,410,1436
 1=0,0,1054,410,2131
@@ -127,7 +127,7 @@ MilestoneOnDate=0
 MilestoneOnDateWhen=1
 MilestoneOnDateStatus=0
 <<<<<<< Updated upstream
-MilestoneOnDateDate=10
+MilestoneOnDateDate=11
 =======
 MilestoneOnDateDate=29
 >>>>>>> Stashed changes
@@ -178,13 +178,13 @@ GroupExpand=0,1,1,0
 [BreakPoint]
 0=
 [Find]
-1="FIg"
-2="figure3"
-3="bitblt"
-4="loadres"
-5="repaint"
-6="stateChanged"
-7="hActor"
-8="paint"
-9="invali"
-10="WMPaint"
+1="BM_INDEX_BACKGROUND"
+2="loadRes"
+3="FIg"
+4="figure3"
+5="bitblt"
+6="repaint"
+7="stateChanged"
+8="hActor"
+9="paint"
+10="invali"
