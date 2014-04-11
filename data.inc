@@ -93,7 +93,9 @@ MapNum equ 20
 	;×ó±ß½ç
 	leftFringe SDWORD 32
 	;ÓÎÏ·×´Ì¬
+	gameSucceedPrefix db "your score : "
 	gameSucceed db "mark:000000" ,0
+	gameOverPrefix db "your score : " 
    	gameOver db "mark:000000", 0
    	gameSucceedTitle db "You Win!",0
    	gameOverTitle db "Game Over!",0

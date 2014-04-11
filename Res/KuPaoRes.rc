@@ -35,6 +35,8 @@
 #define actor3_jump			1073
 #define actor3_lie			1074
 #define index_bg			1080
+#define bgmusic2			1091
+#define ie2				1089
 background		BITMAP    DISCARDABLE "Res/background.bmp"
 actor			ICON      DISCARDABLE "Res/actors/run1_1.ico"
 floor			BITMAP    DISCARDABLE "Res/1234.bmp"
@@ -72,3 +74,5 @@ actor3_run2		ICON      DISCARDABLE "Res/actors/run3_2.ico"
 actor3_jump		ICON      DISCARDABLE "Res/actors/jump3.ico"
 actor3_lie		ICON      DISCARDABLE "Res/actors/lie3.ico"
 index_bg		BITMAP    DISCARDABLE "Res/indexbg.bmp"
+bgmusic2		WAVE      DISCARDABLE "Res/music/bgm2.wav"
+ie2			ICON      DISCARDABLE "Res/fire.ico"

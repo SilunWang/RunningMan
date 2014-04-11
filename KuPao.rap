@@ -45,7 +45,7 @@ Group=Assembly,Resources,Misc
 3=3
 4=4
 [AutoLoad]
-AutoLoad=
+AutoLoad=3,2,1
 [RADebugBP]
 1=
 2=
@@ -88,6 +88,8 @@ AutoLoad=
 35=actor3_jump,1073,2,Res\actors\jump3.ico
 36=actor3_lie,1074,2,Res\actors\lie3.ico
 37=index_bg,1080,0,Res\indexbg.bmp
+38=bgmusic2,1091,5,Res\music\bgm2.wav
+39=ie2,1089,2,Res\fire.ico
 [Collapse]
 3=
 2=
@@ -98,8 +100,8 @@ AutoLoad=
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
-2=0,0,1054,410,2526
-1=0,0,1054,410,23698
+2=0,0,1054,410,1324
+1=0,0,1054,410,4693
 =======
 2=0,0,1054,410,1436
 1=0,0,1054,410,2131
@@ -178,13 +180,13 @@ GroupExpand=0,1,1,0
 [BreakPoint]
 0=
 [Find]
-1="BM_INDEX_BACKGROUND"
-2="loadRes"
-3="FIg"
-4="figure3"
-5="bitblt"
-6="repaint"
-7="stateChanged"
-8="hActor"
-9="paint"
-10="invali"
+1="1026"
+2="µØÃæ"
+3="ghwnd"
+4="500"
+5="gameSucceed"
+6="gameoverSucceed"
+7="BM_INDEX_BACKGROUND"
+8="loadRes"
+9="FIg"
+10="figure3"

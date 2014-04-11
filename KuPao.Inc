@@ -7,6 +7,7 @@ include shell32.inc
 include comctl32.inc
 include comdlg32.inc
 include masm32.inc
+include winmm.inc;
 
 includelib user32.lib
 includelib kernel32.lib
@@ -15,6 +16,7 @@ includelib shell32.lib
 includelib comctl32.lib
 includelib comdlg32.lib
 includelib masm32.lib
+includelib WINMM.lib
 
 WINDOW_WIDTH equ 1024
 WINDOW_HEIGHT equ 576
@@ -53,6 +55,7 @@ ICON_BEAR_BISCUIT equ 1023
 
 ICON_UP_OBSTACLE equ 1024
 ICON_DOWN_OBSTACLE equ 1025
+ICON_DOWN_OBSTACLE2 equ 1089
 
 ICON_0 equ 1008
 ICON_1 equ 1009
@@ -69,6 +72,10 @@ FIGURE_1 equ 1050
 FIGURE_2 equ 1051
 FIGURE_3 equ 1052
 FIGURE_4 equ 1053
+
+BG_MUSIC_1 equ 1090
+BG_MUSIC_2 equ 1091
+
 
 BM_INDEX_BACKGROUND equ 1080
 
@@ -120,6 +127,9 @@ TIMERID equ 1
 	hFIGURE_2 dd ?
 	hFIGURE_3 dd ?
 	hFIGURE_4 dd ?
+	
+	soundFileName1 db ".\Res\music\bgm1.wav",0
+	soundFileName2 db ".\Res\music\bgm2.wav",0
 	
 	testStr db "Stage Clear",0
    	testStr2 db "Message",0

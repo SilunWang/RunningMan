@@ -117,12 +117,13 @@ LOCAL Dc :HDC
 		.if leftFringe > TotalXLimit
 			invoke KillTimer,hWnd, TIMERID
 			invoke dw2a, totalScore, OFFSET gameSucceed
-			invoke MessageBox,0,OFFSET gameSucceed, OFFSET gameSucceedTitle,0
+			invoke MessageBox,0,OFFSET gameSucceedPrefix, OFFSET gameSucceedTitle,0
 		.endif
 		.if isGameOver == 1
+			invoke PlaySound,NULL,NULL,SND_FILENAME
 			invoke KillTimer,hWnd, TIMERID
 			invoke dw2a, totalScore, OFFSET gameOver
-			invoke MessageBox,hWnd,OFFSET gameOver, OFFSET gameOverTitle,0
+			invoke MessageBox,hWnd,OFFSET gameOverPrefix, OFFSET gameOverTitle,0
 			invoke replay
 			;invoke SetTimer, hWnd, TIMERID,FREQUENCY,NULL
 		.endif
@@ -206,6 +207,8 @@ ChooseFigure endp
 LoadResWelcome proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD	
+	invoke GetDC,hWnd
+	mov Dc,eax
 
 	invoke GetDC,hWnd
 	mov Dc,eax
@@ -277,6 +280,9 @@ replay Proc
 	
 	invoke CreateGlobalMap
 	
+	mov ebx, SND_ASYNC
+	or ebx, SND_LOOP
+	invoke PlaySound,OFFSET soundFileName1,NULL,ebx
 	invoke Repaint,ghwnd
 	
 	ret
@@ -312,9 +318,6 @@ LOCAL coinEndY: SDWORD
 	mov ebx, BACKG_WIDTH
 	idiv ebx
 	mov tmpBackground, edx
-	;invoke dw2a, leftFringe, OFFSET testStr
-	;invoke dw2a,coinEndY, OFFSET testStr2
-	;invoke MessageBox,0,OFFSET testStr, OFFSET testStr2,0
 	invoke BitBlt,tmpDc,0,0,WINDOW_WIDTH,WINDOW_HEIGHT,BackgroundDc,tmpBackground,0,SRCCOPY ;//»æÖÆ±³¾°Í¼Æ¬1
 	mov eax, tmpBackground
 	sub eax, BACKG_WIDTH
@@ -513,6 +516,11 @@ DrawMapPoint endp
 LoadRes proc USES eax ebx esi edi,
 	hWnd:HWND
 LOCAL Dc:DWORD
+
+	mov ebx, SND_ASYNC
+	or ebx, SND_LOOP
+	invoke PlaySound,OFFSET soundFileName2,NULL,ebx
+
 	invoke GetDC,hWnd
 	mov Dc,eax
 	
@@ -583,8 +591,13 @@ LOCAL Dc:DWORD
 	invoke LoadImage,hInstance,ICON_UP_OBSTACLE,IMAGE_ICON,UP_OB_WIDTH,UP_OB_HEIGHT,LR_DEFAULTCOLOR
 	mov hUpObstacle,eax
 	
-	invoke LoadImage,hInstance,ICON_DOWN_OBSTACLE,IMAGE_ICON,DOWN_OB_WIDTH,DOWN_OB_HEIGHT,LR_DEFAULTCOLOR
-	mov hDownObstacle,eax
+	.if figureChosen == 1 || figureChosen == 4
+		invoke LoadImage,hInstance,ICON_DOWN_OBSTACLE,IMAGE_ICON,DOWN_OB_WIDTH,DOWN_OB_HEIGHT,LR_DEFAULTCOLOR
+		mov hDownObstacle,eax
+	.else
+		invoke LoadImage,hInstance,ICON_DOWN_OBSTACLE2,IMAGE_ICON,DOWN_OB_WIDTH,DOWN_OB_HEIGHT,LR_DEFAULTCOLOR
+		mov hDownObstacle,eax
+	.endif
 	
 	;Êý×Ö
 	invoke LoadImage,hInstance,ICON_0,IMAGE_ICON,NUMBER_LENGTH,NUMBER_LENGTH,LR_DEFAULTCOLOR
@@ -788,6 +801,12 @@ LOCAL actorHeadElement: DWORD
 	.endif
 	
 	mov eax, actor_y
+	.if eax > 447
+		mov actor_y,484
+		invoke Repaint,ghwnd
+		mov isGameOver, 1
+		
+	.endif
 	.if (actorState == ACTOR_RUN || actorState == ACTOR_LIE) && eax < base_y
 		mov actorSpeed_y, 0
 		mov actorState, ACTOR_JUMP1
@@ -795,6 +814,7 @@ LOCAL actorHeadElement: DWORD
 	
 	.if actorState == ACTOR_LIE && isBlocked == 1
 		mov isBlocked, 0
+		ret
 	.endif
 	
 	mov edi, esi
@@ -887,6 +907,7 @@ LOCAL actorHeadElement: DWORD
 	.if actor_x < ebx
 		mov isGameOver, 1
 	.endif
+	
 	ret
 
 UpdateData endp
